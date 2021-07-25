@@ -11,14 +11,21 @@
     "@mikro-orm/migrations": "^4.5.7",
     "@mikro-orm/postgresql": "^4.5.7",
     "@mikro-orm/reflection": "^4.5.7",
+    "argon2": "^0.28.2",
+    "class-validator": "^0.13.1",
+    "connect-redis": "^6.0.0",
+    "dotenv": "^10.0.0",
     "fastify": "^3.19.2",
     "fastify-cookie": "^5.3.1",
     "fastify-cors": "^6.0.2",
     "fastify-session": "^5.2.1",
+    "graphql": "^15.5.1",
     "ioredis": "^4.27.6",
+    "mercurius": "^8.1.0",
     "pino-pretty": "^5.1.2",
     "redis": "^3.1.2",
     "tsconfig-paths": "^3.10.1",
+    "type-graphql": "^1.1.1",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
@@ -26,8 +33,26 @@
     "@types/ioredis": "^4.26.6",
     "@types/node": "^16.4.2",
     "@types/uuid": "^8.3.1",
+    "@typescript-eslint/eslint-plugin": "^4.28.4",
+    "@typescript-eslint/parser": "^4.28.4",
+    "eslint": "^7.31.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^3.4.0",
+    "prettier": "^2.3.2",
     "ts-node": "^10.1.0",
     "ts-node-dev": "^1.1.8",
     "typescript": "^4.3.5"
+  },
+  "scripts": {
+    "dev": "NODE_ENV=development ts-node-dev --files --respawn -r tsconfig-paths/register src/index.ts",
+    "migration": "npx mikro-orm migration:create",
+    "lint": "eslint src/**/*.ts --fix"
+  },
+  "mikro-orm": {
+    "useTsNode": true,
+    "configPaths": [
+      "./src/orm.config.ts",
+      "./dist/orm.config.js"
+    ]
   }
 }

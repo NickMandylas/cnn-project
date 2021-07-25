@@ -1,0 +1,19 @@
+version: "3"
+services:
+  postgres:
+    image: "postgres:latest"
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: noogle
+    volumes:
+      - db_data:/var/lib/postgresql
+  redis:
+    image: "redis:alpine"
+    ports:
+      - "6379:6379"
+
+volumes:
+  db_data: ~

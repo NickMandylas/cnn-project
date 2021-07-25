@@ -1,0 +1,32 @@
+  
+{
+  "root": true,
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": 2020,
+    "sourceType": "module",
+    "project": "server/tsconfig.json"
+  },
+  "ignorePatterns": "src/migrations/",
+  "plugins": ["@typescript-eslint", "prettier"],
+  "extends": [
+    "plugin:@typescript-eslint/recommended", 
+    "plugin:prettier/recommended" 
+  ],
+  "rules": {
+    "@typescript-eslint/no-non-null-assertion": 0,
+    "@typescript-eslint/no-explicit-any": 0,
+    "@typescript-eslint/explicit-module-boundary-types": 0,
+    "prettier/prettier": [
+      "error",
+      {
+        "tabWidth": 2,
+        "semi": true,
+        "singleQuote": false,
+        "trailingComma": "all",
+        "printWidth": 80,
+        "endOfLine": "auto"
+      }
+    ]
+  }
+}
