@@ -1,15 +1,46 @@
+import { Connection, IDatabaseDriver, MikroORM } from "@mikro-orm/core";
 import connectRedis from "connect-redis";
 import { fastify, FastifyInstance } from "fastify";
 import fastifyCookie from "fastify-cookie";
 import fastifySession from "fastify-session";
 import { IncomingMessage, Server, ServerResponse } from "http";
 import { RedisClient } from "redis";
+import ormConfig from "./orm.config";
 import { Redis } from "./utils";
 import { __prod__ } from "./utils/constants";
 
 export default class Application {
+  public orm: MikroORM<IDatabaseDriver<Connection>>;
   public host: FastifyInstance<Server, IncomingMessage, ServerResponse>;
 
+  /*
+   *
+   * Method - Connect
+   * @description MikroORM establishes conneciton to DB.
+   * @return Promise<void>
+   *
+   */
+  public connect = async (): Promise<void> => {
+    try {
+      this.orm = await MikroORM.init(ormConfig);
+      const migrator = this.orm.getMigrator();
+      const migrations = await migrator.getPendingMigrations();
+      if (migrations && migrations.length > 0) {
+        await migrator.up();
+      }
+    } catch (error) {
+      console.log(`[SERVER] ❌ ERROR – Unable to connect to database!`, error);
+      throw Error(error);
+    }
+  };
+
+  /*
+   *
+   * Method - Init
+   * @description Fastify initialisation.
+   * @return Promise<void>
+   *
+   */
   public init = async (): Promise<void> => {
     this.host = fastify({
       logger: {
