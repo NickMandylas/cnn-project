@@ -19,4 +19,4 @@ DB_NAME=fit3164
 
 ---
 
-To access GraphQL playground to view API, go to [localhost:4000/graphql](http://localhost:4000/graphql)
+To access GraphiQL playground to view API, go to [localhost:4000/graphiql](http://localhost:4000/graphiql)

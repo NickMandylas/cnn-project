@@ -1,12 +1,18 @@
 import { Connection, IDatabaseDriver, MikroORM } from "@mikro-orm/core";
 import connectRedis from "connect-redis";
-import { fastify, FastifyInstance } from "fastify";
+import {
+  fastify,
+  FastifyInstance,
+  FastifyReply,
+  FastifyRequest,
+} from "fastify";
 import fastifyCookie from "fastify-cookie";
 import fastifySession from "fastify-session";
 import { IncomingMessage, Server, ServerResponse } from "http";
+import mercurius from "mercurius";
 import { RedisClient } from "redis";
 import ormConfig from "./orm.config";
-import { Redis } from "./utils";
+import { Redis, Schema } from "./utils";
 import { __prod__ } from "./utils/constants";
 
 export default class Application {
@@ -63,19 +69,37 @@ export default class Application {
       saveUninitialized: false,
       cookie: {
         httpOnly: true,
-        domain: __prod__ ? ".nickmandylas.com" : "",
+        domain: __prod__ ? ".amazon.com" : "",
         secure: __prod__,
         maxAge: 1000 * 60 * 60 * 24 * 7 * 365,
       },
     });
 
-    const PORT = process.env.PORT || 4000;
+    try {
+      const schema = await Schema();
 
-    this.host.listen(PORT, "0.0.0.0", (err) => {
-      if (err) {
-        console.log(err);
-        process.exit(1);
-      }
-    });
+      this.host.register(mercurius, {
+        schema,
+        graphiql: true,
+        context: (req: FastifyRequest, res: FastifyReply) => ({
+          req,
+          res,
+          redis: Redis(),
+          store: store,
+          em: this.orm.em.fork(),
+        }),
+      });
+
+      const PORT = process.env.PORT || 4000;
+
+      this.host.listen(PORT, "0.0.0.0", (err) => {
+        if (err) {
+          console.log(err);
+          process.exit(1);
+        }
+      });
+    } catch (error) {
+      console.log("[SERVER] ERROR - Unable to start server!", error);
+    }
   };
 }
