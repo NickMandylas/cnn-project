@@ -8,10 +8,15 @@ import {
   Paragraph,
 } from "bumbag";
 import { Formik, Form, Field } from "formik";
+import { useRouter } from "next/router";
+import { Head } from "@app/components";
 
 const Register = () => {
+  const router = useRouter();
+
   return (
     <PageContent height="100vh" alignY="center" alignX="center">
+      <Head title="Register" content="Create an account to use the platform." />
       <Box marginBottom="30px" alignX="center">
         <Heading use="h3" fontWeight="bold" color="primary">
           Register
@@ -92,7 +97,11 @@ const Register = () => {
         >
           Already have an account?
         </Paragraph>
-        <Button palette="default" width="100%">
+        <Button
+          palette="default"
+          width="100%"
+          onClick={() => router.push("/login")}
+        >
           Sign In
         </Button>
       </Box>
