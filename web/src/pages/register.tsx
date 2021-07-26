@@ -12,7 +12,12 @@ import { Formik, Form, Field } from "formik";
 import * as yup from "yup";
 import { useRouter } from "next/router";
 import { Head } from "@app/components";
-import { useRegisterMutation } from "@app/generated/graphql";
+import {
+  AccountDocument,
+  AccountQuery,
+  useRegisterMutation,
+} from "@app/generated/graphql";
+import withApollo from "@app/utils/withApollo";
 
 const RegisterSchema = yup.object().shape({
   firstName: yup.string().required("First name is required!"),
@@ -65,7 +70,18 @@ const Register = () => {
           validateOnChange={false}
           onSubmit={async (input, { setErrors }) => {
             setLoading(true);
-            const response = await register({ variables: input });
+            const response = await register({
+              variables: input,
+              update: (cache, { data }) => {
+                cache.writeQuery<AccountQuery>({
+                  query: AccountDocument,
+                  data: {
+                    __typename: "Query",
+                    account: { account: data?.register.account },
+                  },
+                });
+              },
+            });
 
             if (response.data?.register.errors) {
               setErrors({ email: "Email address is already in use." });
@@ -145,4 +161,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default withApollo({ ssr: false })(Register);

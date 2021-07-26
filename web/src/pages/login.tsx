@@ -12,7 +12,12 @@ import { Formik, Form, Field } from "formik";
 import * as yup from "yup";
 import { useRouter } from "next/router";
 import { Head } from "@app/components";
-import { useLoginMutation } from "@app/generated/graphql";
+import {
+  AccountDocument,
+  AccountQuery,
+  useLoginMutation,
+} from "@app/generated/graphql";
+import withApollo from "@app/utils/withApollo";
 
 const LoginSchema = yup.object().shape({
   email: yup
@@ -58,6 +63,15 @@ const Login = () => {
               setLoading(true);
               const response = await login({
                 variables: input,
+                update: (cache, { data }) => {
+                  cache.writeQuery<AccountQuery>({
+                    query: AccountDocument,
+                    data: {
+                      __typename: "Query",
+                      account: { account: data?.login.account },
+                    },
+                  });
+                },
               });
               if (response.data?.login.errors) {
                 setErrors({
@@ -129,4 +143,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default withApollo({ ssr: false })(Login);

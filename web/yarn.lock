@@ -4308,6 +4308,11 @@ natural-compare@^1.4.0:
   resolved "https://registry.yarnpkg.com/natural-compare/-/natural-compare-1.4.0.tgz#4abebfeed7541f2c27acfb29bdbbd15c8d5ba4f7"
   integrity sha1-Sr6/7tdUHywnrPspvbvRXI1bpPc=
 
+next-apollo@^5.0.6:
+  version "5.0.6"
+  resolved "https://registry.yarnpkg.com/next-apollo/-/next-apollo-5.0.6.tgz#65b78e7762cac8c6d3fa5059a9e5bd537af6daaf"
+  integrity sha512-O2l3ak2mGcLa93i5cuac5x9NPkWSC09jRsBGcWtCTFflKjdMF/EDR5ZS37Ttf2icKVfo6eiDtbWv1pBtwlsSoA==
+
 next@^11:
   version "11.0.1"
   resolved "https://registry.yarnpkg.com/next/-/next-11.0.1.tgz#b8e3914d153aaf7143cb98c09bcd3c8230eeb17a"
