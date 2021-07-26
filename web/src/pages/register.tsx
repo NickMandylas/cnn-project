@@ -34,8 +34,7 @@ const RegisterSchema = yup.object().shape({
 
 const Register = () => {
   const router = useRouter();
-  const [register] = useRegisterMutation();
-  const [loading, setLoading] = useState<boolean>(false);
+  const [register, { loading: registerLoading }] = useRegisterMutation();
 
   return (
     <PageContent height="100vh" alignY="center" alignX="center">
@@ -69,7 +68,6 @@ const Register = () => {
           validateOnBlur={true}
           validateOnChange={false}
           onSubmit={async (input, { setErrors }) => {
-            setLoading(true);
             const response = await register({
               variables: input,
               update: (cache, { data }) => {
@@ -88,7 +86,6 @@ const Register = () => {
             } else if (response.data?.register.account) {
               router.push("/dashboard");
             }
-            setLoading(false);
           }}
         >
           <Form style={{ width: "100%" }}>
@@ -122,7 +119,7 @@ const Register = () => {
                 type="submit"
                 palette="primary"
                 width="100%"
-                isLoading={loading}
+                isLoading={registerLoading}
               >
                 Register
               </Button>

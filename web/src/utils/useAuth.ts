@@ -9,7 +9,7 @@ const useAuth = () => {
 
   useEffect(() => {
     if (!loading && !data?.account?.account) {
-      router.replace("/login");
+      router.replace("/login?redirected=true");
     } else if (!loading && data?.account?.account) {
       setStatus(true);
     }

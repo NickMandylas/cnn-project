@@ -29,8 +29,7 @@ const LoginSchema = yup.object().shape({
 
 const Login = () => {
   const router = useRouter();
-  const [login] = useLoginMutation();
-  const [loading, setLoading] = useState<boolean>(false);
+  const [login, { loading: loginLoading }] = useLoginMutation();
 
   return (
     <React.Fragment>
@@ -60,7 +59,6 @@ const Login = () => {
             validateOnBlur={true}
             validateOnChange={false}
             onSubmit={async (input, { setErrors }) => {
-              setLoading(true);
               const response = await login({
                 variables: input,
                 update: (cache, { data }) => {
@@ -81,7 +79,6 @@ const Login = () => {
               } else if (response.data?.login.account) {
                 router.push("/dashboard");
               }
-              setLoading(false);
             }}
           >
             <Form style={{ width: "100%" }}>
@@ -103,7 +100,7 @@ const Login = () => {
                   type="submit"
                   palette="primary"
                   width="100%"
-                  isLoading={loading}
+                  isLoading={loginLoading}
                 >
                   Sign In
                 </Button>
