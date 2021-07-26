@@ -1,6 +1,6 @@
 # FIT3164 Project
 
-A proposed online all-in-one platform that aims to easily allow medical professionals to upload images of skin lesions to a nerual network which will be analysed by a neural network for the likelihood of whether the lesion is malignant form of cancer, as well as the likely variant. 
+A proposed online all-in-one platform that aims to easily allow medical professionals to upload images of skin lesions to a nerual network which will be analysed for the likelihood of whether the lesion is malignant form of cancer, as well as the likely variant. 
 
 ---
 
