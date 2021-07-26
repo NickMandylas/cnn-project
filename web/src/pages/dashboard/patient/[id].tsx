@@ -25,9 +25,9 @@ const Patient = () => {
     <Wrapper>
       <PatientInformation patient={patient} />
       <Set>
-        <Button>Back</Button>
-        <Button palette="primary">Edit</Button>
-        <Button palette="danger">Delete</Button>
+        <Button palette="primary">Back</Button>
+        {/* <Button palette="primary">Edit</Button>
+        <Button palette="danger">Delete</Button> */}
       </Set>
     </Wrapper>
   );
@@ -38,6 +38,8 @@ interface PatientInformationProps {
 }
 
 const PatientInformation: React.FC<PatientInformationProps> = ({ patient }) => {
+  const dt = new Date(Number(patient?.dateOfBirth));
+
   return (
     <Box
       padding="20px"
@@ -61,7 +63,7 @@ const PatientInformation: React.FC<PatientInformationProps> = ({ patient }) => {
       </Paragraph>
       <Paragraph>
         <Text fontWeight="bold">Date Of Birth:</Text>{" "}
-        {`${patient?.dateOfBirth}`}
+        {`${dt.getDate()}/${dt.getMonth()}/${dt.getUTCFullYear()}`}
       </Paragraph>
       <Paragraph>
         <Text fontWeight="bold">Sex:</Text> {`${patient?.sex}`}
