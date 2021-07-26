@@ -1,0 +1,15 @@
+query Account {
+  account {
+    account {
+      id
+      firstName
+      lastName
+      email
+      createdAt
+    }
+    errors {
+      field
+      message
+    }
+  }
+}
