@@ -29,7 +29,7 @@ export class Patient {
   @Property({ type: "text" })
   sex: string;
 
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   @Property({ type: "text", nullable: true })
   notes: string;
 

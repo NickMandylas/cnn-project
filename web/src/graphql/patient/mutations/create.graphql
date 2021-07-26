@@ -1,0 +1,34 @@
+mutation CreatePatient(
+  $firstName: String!
+  $lastName: String!
+  $email: String!
+  $dateOfBirth: DateTime!
+  $sex: String!
+  $notes: String
+) {
+  createPatient(
+    data: {
+      firstName: $firstName
+      lastName: $lastName
+      email: $email
+      dateOfBirth: $dateOfBirth
+      sex: $sex
+      notes: $notes
+    }
+  ) {
+    patient {
+      id
+      firstName
+      lastName
+      email
+      dateOfBirth
+      sex
+      notes
+      createdAt
+    }
+    errors {
+      field
+      message
+    }
+  }
+}
