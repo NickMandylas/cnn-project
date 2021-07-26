@@ -10,3 +10,12 @@ export class PatientResponse {
   @Field(() => Patient, { nullable: true })
   patient?: Patient;
 }
+
+@ObjectType()
+export class PatientsResponse {
+  @Field(() => [FieldError], { nullable: true })
+  errors?: FieldError[];
+
+  @Field(() => [Patient], { nullable: true })
+  patients?: Patient[];
+}

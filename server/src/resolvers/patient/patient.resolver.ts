@@ -1,6 +1,9 @@
 import { ServerContext } from "@server/contracts/interfaces/serverContext";
 import { Patient } from "@server/entities/patient.entity";
-import { PatientResponse } from "@server/shared/responses/patient";
+import {
+  PatientResponse,
+  PatientsResponse,
+} from "@server/shared/responses/patient";
 import { Arg, Ctx, Query, Resolver } from "type-graphql";
 
 @Resolver()
@@ -42,5 +45,21 @@ export class PatientResolver {
     }
 
     return { patient };
+  }
+
+  @Query(() => PatientsResponse, { nullable: true })
+  async patients(
+    @Arg("firstName", { nullable: true }) firstName: string,
+    @Arg("lastName", { nullable: true }) lastName: string,
+    @Ctx() { em }: ServerContext,
+  ): Promise<PatientsResponse> {
+    const patients = await em.find(Patient, {
+      $or: [
+        { firstName: { $like: `${firstName}%` } },
+        { lastName: { $like: `${lastName}%` } },
+      ],
+    });
+
+    return { patients };
   }
 }
