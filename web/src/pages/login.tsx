@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Heading,
   PageContent,
@@ -9,11 +9,28 @@ import {
   Paragraph,
 } from "bumbag";
 import { Formik, Form, Field } from "formik";
+import * as yup from "yup";
 import { useRouter } from "next/router";
 import { Head } from "@app/components";
+import {
+  AccountDocument,
+  AccountQuery,
+  useLoginMutation,
+} from "@app/generated/graphql";
+import withApollo from "@app/utils/withApollo";
+
+const LoginSchema = yup.object().shape({
+  email: yup
+    .string()
+    .email("Doesn't look like a valid email!")
+    .required("An email is required to sign in!"),
+  password: yup.string().required("Looks like you forgot your password!"),
+});
 
 const Login = () => {
   const router = useRouter();
+  const [login] = useLoginMutation();
+  const [loading, setLoading] = useState<boolean>(false);
 
   return (
     <React.Fragment>
@@ -39,7 +56,33 @@ const Login = () => {
         >
           <Formik
             initialValues={{ email: "", password: "" }}
-            onSubmit={(data) => console.log(data)}
+            validationSchema={LoginSchema}
+            validateOnBlur={true}
+            validateOnChange={false}
+            onSubmit={async (input, { setErrors }) => {
+              setLoading(true);
+              const response = await login({
+                variables: input,
+                update: (cache, { data }) => {
+                  cache.writeQuery<AccountQuery>({
+                    query: AccountDocument,
+                    data: {
+                      __typename: "Query",
+                      account: { account: data?.login.account },
+                    },
+                  });
+                },
+              });
+              if (response.data?.login.errors) {
+                setErrors({
+                  email: "Email or password is incorrect.",
+                  password: "Email or password is incorrect.",
+                });
+              } else if (response.data?.login.account) {
+                router.push("/dashboard");
+              }
+              setLoading(false);
+            }}
           >
             <Form style={{ width: "100%" }}>
               <FieldStack>
@@ -56,7 +99,12 @@ const Login = () => {
                   placeholder="●●●●●●●●"
                   type="password"
                 />
-                <Button palette="primary" width="100%">
+                <Button
+                  type="submit"
+                  palette="primary"
+                  width="100%"
+                  isLoading={loading}
+                >
                   Sign In
                 </Button>
               </FieldStack>
@@ -95,4 +143,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default withApollo({ ssr: false })(Login);

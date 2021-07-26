@@ -8,7 +8,7 @@ import { AccountResponse } from "@server/shared/responses/account";
 @Resolver()
 export class LoginResolver {
   @Mutation(() => AccountResponse)
-  async register(
+  async login(
     @Arg("data") { email, password }: LoginInput,
     @Ctx() { em, req }: ServerContext,
   ): Promise<AccountResponse> {

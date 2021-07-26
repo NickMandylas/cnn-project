@@ -7,6 +7,7 @@ import {
   FastifyRequest,
 } from "fastify";
 import fastifyCookie from "fastify-cookie";
+import fastifyCors from "fastify-cors";
 import fastifySession from "fastify-session";
 import { IncomingMessage, Server, ServerResponse } from "http";
 import mercurius from "mercurius";
@@ -55,6 +56,12 @@ export default class Application {
       trustProxy: __prod__ ? 1 : 0,
     });
 
+    this.host.register(fastifyCors, {
+      origin: __prod__
+        ? "" // TODO - Fix for production.
+        : ["http://192.168.114.127:3000", "http://localhost:3000"],
+      credentials: true,
+    });
     this.host.register(fastifyCookie);
 
     const redisStore = connectRedis(fastifySession as any);
@@ -99,7 +106,7 @@ export default class Application {
         }
       });
     } catch (error) {
-      console.log("[SERVER] ERROR - Unable to start server!", error);
+      console.log("[SERVER] ❌ ERROR - Unable to start server!", error);
     }
   };
 }
