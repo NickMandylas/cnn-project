@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   Heading,
   PageContent,
@@ -8,11 +9,28 @@ import {
   Paragraph,
 } from "bumbag";
 import { Formik, Form, Field } from "formik";
+import * as yup from "yup";
 import { useRouter } from "next/router";
 import { Head } from "@app/components";
+import { useRegisterMutation } from "@app/generated/graphql";
+
+const RegisterSchema = yup.object().shape({
+  firstName: yup.string().required("First name is required!"),
+  lastName: yup.string().required("Last name is required!"),
+  email: yup
+    .string()
+    .email("Doesn't look like a valid email!")
+    .required("An email is required to register!"),
+  password: yup
+    .string()
+    .min(8, "Password must be at least 8 characters.")
+    .required("Looks like you forgot your password!"),
+});
 
 const Register = () => {
   const router = useRouter();
+  const [register] = useRegisterMutation();
+  const [loading, setLoading] = useState<boolean>(false);
 
   return (
     <PageContent height="100vh" alignY="center" alignX="center">
@@ -42,7 +60,20 @@ const Register = () => {
             email: "",
             password: "",
           }}
-          onSubmit={(data) => console.log(data)}
+          validationSchema={RegisterSchema}
+          validateOnBlur={true}
+          validateOnChange={false}
+          onSubmit={async (input, { setErrors }) => {
+            setLoading(true);
+            const response = await register({ variables: input });
+
+            if (response.data?.register.errors) {
+              setErrors({ email: "Email address is already in use." });
+            } else if (response.data?.register.account) {
+              router.push("/dashboard");
+            }
+            setLoading(false);
+          }}
         >
           <Form style={{ width: "100%" }}>
             <FieldStack>
@@ -71,7 +102,12 @@ const Register = () => {
                 placeholder="●●●●●●●●"
                 type="password"
               />
-              <Button palette="primary" width="100%">
+              <Button
+                type="submit"
+                palette="primary"
+                width="100%"
+                isLoading={loading}
+              >
                 Register
               </Button>
             </FieldStack>
