@@ -21,13 +21,16 @@ export class Patient {
   @Property({ type: "text", unique: true })
   email: string;
 
-  @Property({ type: "text" })
-  dateOfBirth: string;
+  @Field(() => String)
+  @Property({ type: "date" })
+  dateOfBirth: Date;
 
+  @Field(() => String)
   @Property({ type: "text" })
   sex: string;
 
-  @Property({ type: "text" })
+  @Field(() => String)
+  @Property({ type: "text", nullable: true })
   notes: string;
 
   @Field(() => String)
