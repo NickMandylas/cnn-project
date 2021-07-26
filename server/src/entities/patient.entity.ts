@@ -4,7 +4,7 @@ import { v4 } from "uuid";
 
 @ObjectType()
 @Entity()
-export class Account {
+export class Patient {
   @Field(() => ID)
   @PrimaryKey({ type: "uuid" })
   id: string = v4();
@@ -22,7 +22,13 @@ export class Account {
   email: string;
 
   @Property({ type: "text" })
-  password: string;
+  dateOfBirth: string;
+
+  @Property({ type: "text" })
+  sex: string;
+
+  @Property({ type: "text" })
+  notes: string;
 
   @Field(() => String)
   @Property({ type: "date" })
