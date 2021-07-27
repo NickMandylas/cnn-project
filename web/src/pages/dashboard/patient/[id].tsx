@@ -33,8 +33,12 @@ const Patient = () => {
         <Button palette="primary" onClick={() => router.back()}>
           Back
         </Button>
-        {/* <Button palette="primary">Edit</Button>
-        <Button palette="danger">Delete</Button> */}
+        <Button
+          palette="secondary"
+          onClick={() => router.push(`/dashboard/patient/edit/${patient?.id}`)}
+        >
+          Edit
+        </Button>
       </Set>
     </Wrapper>
   );

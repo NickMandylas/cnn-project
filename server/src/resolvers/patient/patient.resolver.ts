@@ -52,8 +52,20 @@ export class PatientResolver {
   ): Promise<PatientsResponse> {
     const patients = await em.find(Patient, {
       $and: [
-        { firstName: { $like: `${firstName}%` } },
-        { lastName: { $like: `${lastName}%` } },
+        {
+          firstName: {
+            $like: `${
+              !!firstName ? firstName[0].toUpperCase() + firstName.slice(1) : ""
+            }%`,
+          },
+        },
+        {
+          lastName: {
+            $like: `${
+              !!lastName ? lastName[0].toUpperCase() + lastName.slice(1) : ""
+            }%`,
+          },
+        },
       ],
     });
 

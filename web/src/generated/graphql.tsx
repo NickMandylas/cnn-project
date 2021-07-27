@@ -39,6 +39,16 @@ export type CreatePatientInput = {
   notes?: Maybe<Scalars['String']>;
 };
 
+export type EditPatientInput = {
+  id: Scalars['String'];
+  firstName: Scalars['String'];
+  lastName: Scalars['String'];
+  email: Scalars['String'];
+  dateOfBirth: Scalars['String'];
+  sex: Scalars['String'];
+  notes?: Maybe<Scalars['String']>;
+};
+
 export type FieldError = {
   __typename?: 'FieldError';
   field: Scalars['String'];
@@ -55,6 +65,7 @@ export type Mutation = {
   login: AccountResponse;
   register: AccountResponse;
   createPatient: PatientResponse;
+  editPatient: PatientResponse;
 };
 
 
@@ -70,6 +81,11 @@ export type MutationRegisterArgs = {
 
 export type MutationCreatePatientArgs = {
   data: CreatePatientInput;
+};
+
+
+export type MutationEditPatientArgs = {
+  data: EditPatientInput;
 };
 
 export type Patient = {
@@ -195,6 +211,31 @@ export type CreatePatientMutationVariables = Exact<{
 export type CreatePatientMutation = (
   { __typename?: 'Mutation' }
   & { createPatient: (
+    { __typename?: 'PatientResponse' }
+    & { patient?: Maybe<(
+      { __typename?: 'Patient' }
+      & Pick<Patient, 'id' | 'firstName' | 'lastName' | 'email' | 'dateOfBirth' | 'sex' | 'notes' | 'createdAt'>
+    )>, errors?: Maybe<Array<(
+      { __typename?: 'FieldError' }
+      & Pick<FieldError, 'field' | 'message'>
+    )>> }
+  ) }
+);
+
+export type EditPatientMutationVariables = Exact<{
+  id: Scalars['String'];
+  firstName: Scalars['String'];
+  lastName: Scalars['String'];
+  email: Scalars['String'];
+  dateOfBirth: Scalars['String'];
+  sex: Scalars['String'];
+  notes?: Maybe<Scalars['String']>;
+}>;
+
+
+export type EditPatientMutation = (
+  { __typename?: 'Mutation' }
+  & { editPatient: (
     { __typename?: 'PatientResponse' }
     & { patient?: Maybe<(
       { __typename?: 'Patient' }
@@ -436,6 +477,60 @@ export function useCreatePatientMutation(baseOptions?: Apollo.MutationHookOption
 export type CreatePatientMutationHookResult = ReturnType<typeof useCreatePatientMutation>;
 export type CreatePatientMutationResult = Apollo.MutationResult<CreatePatientMutation>;
 export type CreatePatientMutationOptions = Apollo.BaseMutationOptions<CreatePatientMutation, CreatePatientMutationVariables>;
+export const EditPatientDocument = gql`
+    mutation EditPatient($id: String!, $firstName: String!, $lastName: String!, $email: String!, $dateOfBirth: String!, $sex: String!, $notes: String) {
+  editPatient(
+    data: {id: $id, firstName: $firstName, lastName: $lastName, email: $email, dateOfBirth: $dateOfBirth, sex: $sex, notes: $notes}
+  ) {
+    patient {
+      id
+      firstName
+      lastName
+      email
+      dateOfBirth
+      sex
+      notes
+      createdAt
+    }
+    errors {
+      field
+      message
+    }
+  }
+}
+    `;
+export type EditPatientMutationFn = Apollo.MutationFunction<EditPatientMutation, EditPatientMutationVariables>;
+
+/**
+ * __useEditPatientMutation__
+ *
+ * To run a mutation, you first call `useEditPatientMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useEditPatientMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [editPatientMutation, { data, loading, error }] = useEditPatientMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      firstName: // value for 'firstName'
+ *      lastName: // value for 'lastName'
+ *      email: // value for 'email'
+ *      dateOfBirth: // value for 'dateOfBirth'
+ *      sex: // value for 'sex'
+ *      notes: // value for 'notes'
+ *   },
+ * });
+ */
+export function useEditPatientMutation(baseOptions?: Apollo.MutationHookOptions<EditPatientMutation, EditPatientMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<EditPatientMutation, EditPatientMutationVariables>(EditPatientDocument, options);
+      }
+export type EditPatientMutationHookResult = ReturnType<typeof useEditPatientMutation>;
+export type EditPatientMutationResult = Apollo.MutationResult<EditPatientMutation>;
+export type EditPatientMutationOptions = Apollo.BaseMutationOptions<EditPatientMutation, EditPatientMutationVariables>;
 export const PatientDocument = gql`
     query Patient($id: String, $email: String) {
   patient(id: $id, email: $email) {
