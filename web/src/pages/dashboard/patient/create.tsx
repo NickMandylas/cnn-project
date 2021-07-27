@@ -3,7 +3,7 @@ import { Loading, Wrapper } from "@app/components";
 import useAuth from "@app/utils/useAuth";
 import withApollo from "@app/utils/withApollo";
 
-const Patient = () => {
+const Create = () => {
   const status = useAuth();
 
   if (!status) {
@@ -17,4 +17,4 @@ const Patient = () => {
   );
 };
 
-export default withApollo({ ssr: false })(Patient);
+export default withApollo({ ssr: false })(Create);

@@ -1,12 +1,10 @@
 import React from "react";
-import { Text, Table, Button, Heading, Box, Columns, InputField } from "bumbag";
-import { Loading, Wrapper } from "@app/components";
+import { Text, Table, Button, Heading, Box } from "bumbag";
+import { Loading, PatientSearch, Wrapper } from "@app/components";
 import useAuth from "@app/utils/useAuth";
 import withApollo from "@app/utils/withApollo";
 import { NextRouter, useRouter } from "next/router";
 import { PatientsQuery, usePatientsQuery } from "@app/generated/graphql";
-import { Form, Formik, Field } from "formik";
-import * as yup from "yup";
 
 const Patient = () => {
   const status = useAuth();
@@ -30,50 +28,11 @@ const Patient = () => {
         <Heading use="h4" paddingBottom="15px">
           Patient Search
         </Heading>
-        <Formik
-          initialValues={{
-            firstName: firstName === undefined ? "" : firstName,
-            lastName: lastName === undefined ? "" : lastName,
-          }}
-          onSubmit={(values) => {
-            router.push(
-              `/dashboard/patient?firstName=${values.firstName}&lastName=${values.lastName}`
-            );
-          }}
-        >
-          <Form>
-            <Box>
-              <Columns>
-                <Columns.Column spread={5}>
-                  <Field
-                    component={InputField.Formik}
-                    name="firstName"
-                    label="First Name"
-                    placeholder="John"
-                  />
-                </Columns.Column>
-                <Columns.Column spread={5}>
-                  <Field
-                    component={InputField.Formik}
-                    name="lastName"
-                    label="Last Name"
-                    placeholder="Doe"
-                  />
-                </Columns.Column>
-                <Columns.Column spread={2}>
-                  <Button
-                    type="submit"
-                    palette="primary"
-                    marginTop="23px"
-                    width="100%"
-                  >
-                    Submit
-                  </Button>
-                </Columns.Column>
-              </Columns>
-            </Box>
-          </Form>
-        </Formik>
+        <PatientSearch
+          firstName={firstName}
+          lastName={lastName}
+          router={router}
+        />
         <Box
           style={{ width: "100%", border: "1px solid" }}
           borderColor="primary"

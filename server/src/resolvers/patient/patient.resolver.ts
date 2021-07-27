@@ -5,6 +5,7 @@ import {
   PatientsResponse,
 } from "@server/shared/responses/patient";
 import { Arg, Ctx, Query, Resolver } from "type-graphql";
+import isUUID from "validator/lib/isUUID";
 
 @Resolver()
 export class PatientResolver {
@@ -25,20 +26,16 @@ export class PatientResolver {
       };
     }
 
-    let patient: Patient | null;
-
-    if (email) {
-      patient = await em.findOne(Patient, { email });
-    } else {
-      patient = await em.findOne(Patient, { id });
-    }
+    const patient = await em.findOne(Patient, {
+      $or: [{ email }, { id: isUUID(id) ? id : "" }],
+    });
 
     if (!patient) {
       return {
         errors: [
           {
-            field: "email",
-            message: "Patient could not be found with provided email.",
+            field: "patient",
+            message: "Patient could not be found with provided details.",
           },
         ],
       };
