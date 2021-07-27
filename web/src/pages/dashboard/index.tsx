@@ -20,7 +20,7 @@ const Dashboard = () => {
   }
 
   return (
-    <Wrapper>
+    <Wrapper selectedId="Home">
       <Head title="Dashboard" content="Dashboard for Platform" />
       <Box
         border="3px solid"
