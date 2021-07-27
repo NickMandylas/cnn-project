@@ -37,16 +37,20 @@ const Dashboard = () => {
         <OptionBox
           title="Create Patient"
           buttonTitle="Create"
+          description="Add a new patient to the Peter Mac system to perform future skin
+          cancer checks."
           onClick={() => router.push("/dashboard/patient/create")}
         />
         <OptionBox
           title="Add Historical Data"
           buttonTitle="Create"
+          description="Add a historical check, including results, to the results database."
           onClick={() => router.push("/dashboard")}
         />
         <OptionBox
           title="Perform Cancer Check"
           buttonTitle="Check"
+          description="Perform a skin cancer check with image processing of the patient’s skin lesion."
           onClick={() => router.push("/dashboard")}
         />
       </Columns>
@@ -60,7 +64,7 @@ const Dashboard = () => {
         <Heading use="h4" marginBottom="25px">
           Recent Checks
         </Heading>
-        <Paragraph>TODO</Paragraph>
+        <Paragraph font="mono">TODO</Paragraph>
       </Box>
     </Wrapper>
   );
