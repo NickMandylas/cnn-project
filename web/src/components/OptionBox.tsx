@@ -23,7 +23,7 @@ const OptionBox: React.FC<OptionBoxProps> = ({
         <Heading use="h4" marginBottom="25px" textAlign="center">
           {title}
         </Heading>
-        <Button width="100%" onClick={onClick}>
+        <Button width="100%" palette="primary" onClick={onClick}>
           {buttonTitle}
         </Button>
       </Box>
