@@ -1,29 +1,44 @@
-import { useAccountQuery } from "@app/generated/graphql";
-import {
-  TopNav,
-  Text,
-  Button,
-  usePage,
-  Hide,
-  DropdownMenu,
-  Icon,
-} from "bumbag";
 import React from "react";
+import { useAccountQuery } from "@app/generated/graphql";
+import { TopNav, Text, Button, usePage, Hide } from "bumbag";
+import { useRouter } from "next/router";
 
-interface NavigationProps {}
+interface NavigationProps {
+  selectedId?: string;
+}
 
-const Navigation: React.FC<NavigationProps> = () => {
+const Navigation: React.FC<NavigationProps> = ({ selectedId }) => {
   const { data } = useAccountQuery();
   const { collapseBelow } = usePage();
+  const router = useRouter();
 
   return (
-    <TopNav backgroundColor="primary">
+    <TopNav backgroundColor="primary" selectedId={selectedId}>
       <TopNav.Section>
-        <TopNav.Item fontWeight="semibold">
+        <TopNav.Item
+          fontWeight="semibold"
+          onClick={() => router.push("/dashboard")}
+        >
           <Text font="default" color="default" marginLeft="15px">
             Skin Cancer Detection Platform
           </Text>
         </TopNav.Item>
+        <TopNav.Item
+          palette="default"
+          color="white800"
+          navId="Home"
+          onClick={() => router.push("/dashboard")}
+        >
+          Home
+        </TopNav.Item>
+        {/* <TopNav.Item
+          palette="default"
+          borderColor="default"
+          color="white800"
+          href="#"
+        >
+          Search
+        </TopNav.Item> */}
       </TopNav.Section>
       <TopNav.Section marginRight="major-2">
         <Hide below={collapseBelow}>

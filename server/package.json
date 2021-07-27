@@ -26,7 +26,8 @@
     "redis": "^3.1.2",
     "tsconfig-paths": "^3.10.1",
     "type-graphql": "^1.1.1",
-    "uuid": "^8.3.2"
+    "uuid": "^8.3.2",
+    "validator": "^13.6.0"
   },
   "devDependencies": {
     "@types/connect-redis": "^0.0.17",

@@ -30,6 +30,25 @@ export type AccountResponse = {
   account?: Maybe<Account>;
 };
 
+export type CreatePatientInput = {
+  firstName: Scalars['String'];
+  lastName: Scalars['String'];
+  email: Scalars['String'];
+  dateOfBirth: Scalars['String'];
+  sex: Scalars['String'];
+  notes?: Maybe<Scalars['String']>;
+};
+
+export type EditPatientInput = {
+  id: Scalars['String'];
+  firstName: Scalars['String'];
+  lastName: Scalars['String'];
+  email: Scalars['String'];
+  dateOfBirth: Scalars['String'];
+  sex: Scalars['String'];
+  notes?: Maybe<Scalars['String']>;
+};
+
 export type FieldError = {
   __typename?: 'FieldError';
   field: Scalars['String'];
@@ -45,6 +64,9 @@ export type Mutation = {
   __typename?: 'Mutation';
   login: AccountResponse;
   register: AccountResponse;
+  createPatient: PatientResponse;
+  deletePatient: Scalars['Boolean'];
+  editPatient: PatientResponse;
 };
 
 
@@ -57,9 +79,63 @@ export type MutationRegisterArgs = {
   data: RegisterInput;
 };
 
+
+export type MutationCreatePatientArgs = {
+  data: CreatePatientInput;
+};
+
+
+export type MutationDeletePatientArgs = {
+  id: Scalars['String'];
+};
+
+
+export type MutationEditPatientArgs = {
+  data: EditPatientInput;
+};
+
+export type Patient = {
+  __typename?: 'Patient';
+  id: Scalars['ID'];
+  firstName: Scalars['String'];
+  lastName: Scalars['String'];
+  email: Scalars['String'];
+  dateOfBirth: Scalars['String'];
+  sex: Scalars['String'];
+  notes?: Maybe<Scalars['String']>;
+  createdAt: Scalars['String'];
+  updatedAt: Scalars['String'];
+};
+
+export type PatientResponse = {
+  __typename?: 'PatientResponse';
+  errors?: Maybe<Array<FieldError>>;
+  patient?: Maybe<Patient>;
+};
+
+export type PatientsResponse = {
+  __typename?: 'PatientsResponse';
+  errors?: Maybe<Array<FieldError>>;
+  patients?: Maybe<Array<Patient>>;
+};
+
 export type Query = {
   __typename?: 'Query';
   account?: Maybe<AccountResponse>;
+  patient?: Maybe<PatientResponse>;
+  patients?: Maybe<PatientsResponse>;
+};
+
+
+export type QueryPatientArgs = {
+  id?: Maybe<Scalars['String']>;
+  email?: Maybe<Scalars['String']>;
+};
+
+
+export type QueryPatientsArgs = {
+  lastName?: Maybe<Scalars['String']>;
+  firstName?: Maybe<Scalars['String']>;
 };
 
 export type RegisterInput = {
@@ -122,6 +198,105 @@ export type AccountQuery = (
       { __typename?: 'Account' }
       & Pick<Account, 'id' | 'firstName' | 'lastName' | 'email' | 'createdAt'>
     )>, errors?: Maybe<Array<(
+      { __typename?: 'FieldError' }
+      & Pick<FieldError, 'field' | 'message'>
+    )>> }
+  )> }
+);
+
+export type CreatePatientMutationVariables = Exact<{
+  firstName: Scalars['String'];
+  lastName: Scalars['String'];
+  email: Scalars['String'];
+  dateOfBirth: Scalars['String'];
+  sex: Scalars['String'];
+  notes?: Maybe<Scalars['String']>;
+}>;
+
+
+export type CreatePatientMutation = (
+  { __typename?: 'Mutation' }
+  & { createPatient: (
+    { __typename?: 'PatientResponse' }
+    & { patient?: Maybe<(
+      { __typename?: 'Patient' }
+      & Pick<Patient, 'id' | 'firstName' | 'lastName' | 'email' | 'dateOfBirth' | 'sex' | 'notes' | 'createdAt'>
+    )>, errors?: Maybe<Array<(
+      { __typename?: 'FieldError' }
+      & Pick<FieldError, 'field' | 'message'>
+    )>> }
+  ) }
+);
+
+export type DeletePatientMutationVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type DeletePatientMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'deletePatient'>
+);
+
+export type EditPatientMutationVariables = Exact<{
+  id: Scalars['String'];
+  firstName: Scalars['String'];
+  lastName: Scalars['String'];
+  email: Scalars['String'];
+  dateOfBirth: Scalars['String'];
+  sex: Scalars['String'];
+  notes?: Maybe<Scalars['String']>;
+}>;
+
+
+export type EditPatientMutation = (
+  { __typename?: 'Mutation' }
+  & { editPatient: (
+    { __typename?: 'PatientResponse' }
+    & { patient?: Maybe<(
+      { __typename?: 'Patient' }
+      & Pick<Patient, 'id' | 'firstName' | 'lastName' | 'email' | 'dateOfBirth' | 'sex' | 'notes' | 'createdAt'>
+    )>, errors?: Maybe<Array<(
+      { __typename?: 'FieldError' }
+      & Pick<FieldError, 'field' | 'message'>
+    )>> }
+  ) }
+);
+
+export type PatientQueryVariables = Exact<{
+  id?: Maybe<Scalars['String']>;
+  email?: Maybe<Scalars['String']>;
+}>;
+
+
+export type PatientQuery = (
+  { __typename?: 'Query' }
+  & { patient?: Maybe<(
+    { __typename?: 'PatientResponse' }
+    & { patient?: Maybe<(
+      { __typename?: 'Patient' }
+      & Pick<Patient, 'id' | 'firstName' | 'lastName' | 'email' | 'dateOfBirth' | 'sex' | 'notes' | 'createdAt'>
+    )>, errors?: Maybe<Array<(
+      { __typename?: 'FieldError' }
+      & Pick<FieldError, 'field' | 'message'>
+    )>> }
+  )> }
+);
+
+export type PatientsQueryVariables = Exact<{
+  firstName?: Maybe<Scalars['String']>;
+  lastName?: Maybe<Scalars['String']>;
+}>;
+
+
+export type PatientsQuery = (
+  { __typename?: 'Query' }
+  & { patients?: Maybe<(
+    { __typename?: 'PatientsResponse' }
+    & { patients?: Maybe<Array<(
+      { __typename?: 'Patient' }
+      & Pick<Patient, 'id' | 'firstName' | 'lastName' | 'email' | 'dateOfBirth' | 'sex' | 'notes' | 'createdAt'>
+    )>>, errors?: Maybe<Array<(
       { __typename?: 'FieldError' }
       & Pick<FieldError, 'field' | 'message'>
     )>> }
@@ -265,3 +440,239 @@ export function useAccountLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Ac
 export type AccountQueryHookResult = ReturnType<typeof useAccountQuery>;
 export type AccountLazyQueryHookResult = ReturnType<typeof useAccountLazyQuery>;
 export type AccountQueryResult = Apollo.QueryResult<AccountQuery, AccountQueryVariables>;
+export const CreatePatientDocument = gql`
+    mutation CreatePatient($firstName: String!, $lastName: String!, $email: String!, $dateOfBirth: String!, $sex: String!, $notes: String) {
+  createPatient(
+    data: {firstName: $firstName, lastName: $lastName, email: $email, dateOfBirth: $dateOfBirth, sex: $sex, notes: $notes}
+  ) {
+    patient {
+      id
+      firstName
+      lastName
+      email
+      dateOfBirth
+      sex
+      notes
+      createdAt
+    }
+    errors {
+      field
+      message
+    }
+  }
+}
+    `;
+export type CreatePatientMutationFn = Apollo.MutationFunction<CreatePatientMutation, CreatePatientMutationVariables>;
+
+/**
+ * __useCreatePatientMutation__
+ *
+ * To run a mutation, you first call `useCreatePatientMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreatePatientMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createPatientMutation, { data, loading, error }] = useCreatePatientMutation({
+ *   variables: {
+ *      firstName: // value for 'firstName'
+ *      lastName: // value for 'lastName'
+ *      email: // value for 'email'
+ *      dateOfBirth: // value for 'dateOfBirth'
+ *      sex: // value for 'sex'
+ *      notes: // value for 'notes'
+ *   },
+ * });
+ */
+export function useCreatePatientMutation(baseOptions?: Apollo.MutationHookOptions<CreatePatientMutation, CreatePatientMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreatePatientMutation, CreatePatientMutationVariables>(CreatePatientDocument, options);
+      }
+export type CreatePatientMutationHookResult = ReturnType<typeof useCreatePatientMutation>;
+export type CreatePatientMutationResult = Apollo.MutationResult<CreatePatientMutation>;
+export type CreatePatientMutationOptions = Apollo.BaseMutationOptions<CreatePatientMutation, CreatePatientMutationVariables>;
+export const DeletePatientDocument = gql`
+    mutation DeletePatient($id: String!) {
+  deletePatient(id: $id)
+}
+    `;
+export type DeletePatientMutationFn = Apollo.MutationFunction<DeletePatientMutation, DeletePatientMutationVariables>;
+
+/**
+ * __useDeletePatientMutation__
+ *
+ * To run a mutation, you first call `useDeletePatientMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeletePatientMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deletePatientMutation, { data, loading, error }] = useDeletePatientMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeletePatientMutation(baseOptions?: Apollo.MutationHookOptions<DeletePatientMutation, DeletePatientMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeletePatientMutation, DeletePatientMutationVariables>(DeletePatientDocument, options);
+      }
+export type DeletePatientMutationHookResult = ReturnType<typeof useDeletePatientMutation>;
+export type DeletePatientMutationResult = Apollo.MutationResult<DeletePatientMutation>;
+export type DeletePatientMutationOptions = Apollo.BaseMutationOptions<DeletePatientMutation, DeletePatientMutationVariables>;
+export const EditPatientDocument = gql`
+    mutation EditPatient($id: String!, $firstName: String!, $lastName: String!, $email: String!, $dateOfBirth: String!, $sex: String!, $notes: String) {
+  editPatient(
+    data: {id: $id, firstName: $firstName, lastName: $lastName, email: $email, dateOfBirth: $dateOfBirth, sex: $sex, notes: $notes}
+  ) {
+    patient {
+      id
+      firstName
+      lastName
+      email
+      dateOfBirth
+      sex
+      notes
+      createdAt
+    }
+    errors {
+      field
+      message
+    }
+  }
+}
+    `;
+export type EditPatientMutationFn = Apollo.MutationFunction<EditPatientMutation, EditPatientMutationVariables>;
+
+/**
+ * __useEditPatientMutation__
+ *
+ * To run a mutation, you first call `useEditPatientMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useEditPatientMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [editPatientMutation, { data, loading, error }] = useEditPatientMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      firstName: // value for 'firstName'
+ *      lastName: // value for 'lastName'
+ *      email: // value for 'email'
+ *      dateOfBirth: // value for 'dateOfBirth'
+ *      sex: // value for 'sex'
+ *      notes: // value for 'notes'
+ *   },
+ * });
+ */
+export function useEditPatientMutation(baseOptions?: Apollo.MutationHookOptions<EditPatientMutation, EditPatientMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<EditPatientMutation, EditPatientMutationVariables>(EditPatientDocument, options);
+      }
+export type EditPatientMutationHookResult = ReturnType<typeof useEditPatientMutation>;
+export type EditPatientMutationResult = Apollo.MutationResult<EditPatientMutation>;
+export type EditPatientMutationOptions = Apollo.BaseMutationOptions<EditPatientMutation, EditPatientMutationVariables>;
+export const PatientDocument = gql`
+    query Patient($id: String, $email: String) {
+  patient(id: $id, email: $email) {
+    patient {
+      id
+      firstName
+      lastName
+      email
+      dateOfBirth
+      sex
+      notes
+      createdAt
+    }
+    errors {
+      field
+      message
+    }
+  }
+}
+    `;
+
+/**
+ * __usePatientQuery__
+ *
+ * To run a query within a React component, call `usePatientQuery` and pass it any options that fit your needs.
+ * When your component renders, `usePatientQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = usePatientQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *      email: // value for 'email'
+ *   },
+ * });
+ */
+export function usePatientQuery(baseOptions?: Apollo.QueryHookOptions<PatientQuery, PatientQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<PatientQuery, PatientQueryVariables>(PatientDocument, options);
+      }
+export function usePatientLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<PatientQuery, PatientQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<PatientQuery, PatientQueryVariables>(PatientDocument, options);
+        }
+export type PatientQueryHookResult = ReturnType<typeof usePatientQuery>;
+export type PatientLazyQueryHookResult = ReturnType<typeof usePatientLazyQuery>;
+export type PatientQueryResult = Apollo.QueryResult<PatientQuery, PatientQueryVariables>;
+export const PatientsDocument = gql`
+    query Patients($firstName: String, $lastName: String) {
+  patients(firstName: $firstName, lastName: $lastName) {
+    patients {
+      id
+      firstName
+      lastName
+      email
+      dateOfBirth
+      sex
+      notes
+      createdAt
+    }
+    errors {
+      field
+      message
+    }
+  }
+}
+    `;
+
+/**
+ * __usePatientsQuery__
+ *
+ * To run a query within a React component, call `usePatientsQuery` and pass it any options that fit your needs.
+ * When your component renders, `usePatientsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = usePatientsQuery({
+ *   variables: {
+ *      firstName: // value for 'firstName'
+ *      lastName: // value for 'lastName'
+ *   },
+ * });
+ */
+export function usePatientsQuery(baseOptions?: Apollo.QueryHookOptions<PatientsQuery, PatientsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<PatientsQuery, PatientsQueryVariables>(PatientsDocument, options);
+      }
+export function usePatientsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<PatientsQuery, PatientsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<PatientsQuery, PatientsQueryVariables>(PatientsDocument, options);
+        }
+export type PatientsQueryHookResult = ReturnType<typeof usePatientsQuery>;
+export type PatientsLazyQueryHookResult = ReturnType<typeof usePatientsLazyQuery>;
+export type PatientsQueryResult = Apollo.QueryResult<PatientsQuery, PatientsQueryVariables>;

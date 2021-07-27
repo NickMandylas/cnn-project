@@ -1,0 +1,36 @@
+mutation EditPatient(
+  $id: String!
+  $firstName: String!
+  $lastName: String!
+  $email: String!
+  $dateOfBirth: String!
+  $sex: String!
+  $notes: String
+) {
+  editPatient(
+    data: {
+      id: $id
+      firstName: $firstName
+      lastName: $lastName
+      email: $email
+      dateOfBirth: $dateOfBirth
+      sex: $sex
+      notes: $notes
+    }
+  ) {
+    patient {
+      id
+      firstName
+      lastName
+      email
+      dateOfBirth
+      sex
+      notes
+      createdAt
+    }
+    errors {
+      field
+      message
+    }
+  }
+}

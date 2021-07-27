@@ -1,0 +1,18 @@
+query Patients($firstName: String, $lastName: String) {
+  patients(firstName: $firstName, lastName: $lastName) {
+    patients {
+      id
+      firstName
+      lastName
+      email
+      dateOfBirth
+      sex
+      notes
+      createdAt
+    }
+    errors {
+      field
+      message
+    }
+  }
+}
