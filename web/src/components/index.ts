@@ -3,3 +3,4 @@ export { default as Loading } from "./Loading";
 export { default as Navigation } from "./Navigation";
 export { default as Wrapper } from "./Wrapper";
 export { default as PatientSearch } from "./PatientSearch";
+export { default as OptionBox } from "./OptionBox";

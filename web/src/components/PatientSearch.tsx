@@ -20,10 +20,17 @@ const PatientSearch: React.FC<PatientSearchProps> = ({
         firstName: firstName === undefined ? "" : firstName,
         lastName: lastName === undefined ? "" : lastName,
       }}
-      onSubmit={(values) => {
-        router.push(
-          `/dashboard/patient?firstName=${values.firstName}&lastName=${values.lastName}`
-        );
+      onSubmit={(values, { setErrors }) => {
+        if (values.firstName === "" && values.lastName === "") {
+          setErrors({
+            firstName: "Need an entry for at one search entry.",
+            lastName: "Need an entry for at one search entry.",
+          });
+        } else {
+          router.push(
+            `/dashboard/patient?firstName=${values.firstName}&lastName=${values.lastName}`
+          );
+        }
       }}
     >
       <Form>

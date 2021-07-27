@@ -2,7 +2,7 @@ mutation CreatePatient(
   $firstName: String!
   $lastName: String!
   $email: String!
-  $dateOfBirth: DateTime!
+  $dateOfBirth: String!
   $sex: String!
   $notes: String
 ) {

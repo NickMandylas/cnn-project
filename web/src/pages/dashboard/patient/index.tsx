@@ -1,6 +1,6 @@
 import React from "react";
 import { Text, Table, Button, Heading, Box } from "bumbag";
-import { Loading, PatientSearch, Wrapper } from "@app/components";
+import { Head, Loading, PatientSearch, Wrapper } from "@app/components";
 import useAuth from "@app/utils/useAuth";
 import withApollo from "@app/utils/withApollo";
 import { NextRouter, useRouter } from "next/router";
@@ -24,6 +24,10 @@ const Patient = () => {
 
   return (
     <Wrapper>
+      <Head
+        title="Patient - Search"
+        content="Search for patient information."
+      />
       <Text>
         <Heading use="h4" paddingBottom="15px">
           Patient Search

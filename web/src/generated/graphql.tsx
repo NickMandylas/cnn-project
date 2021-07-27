@@ -12,8 +12,6 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
-  /** The javascript `Date` as string. Type represents date and time as the ISO Date string. */
-  DateTime: any;
 };
 
 export type Account = {
@@ -36,11 +34,10 @@ export type CreatePatientInput = {
   firstName: Scalars['String'];
   lastName: Scalars['String'];
   email: Scalars['String'];
-  dateOfBirth: Scalars['DateTime'];
+  dateOfBirth: Scalars['String'];
   sex: Scalars['String'];
   notes?: Maybe<Scalars['String']>;
 };
-
 
 export type FieldError = {
   __typename?: 'FieldError';
@@ -83,7 +80,7 @@ export type Patient = {
   email: Scalars['String'];
   dateOfBirth: Scalars['String'];
   sex: Scalars['String'];
-  notes: Scalars['String'];
+  notes?: Maybe<Scalars['String']>;
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
 };
@@ -189,7 +186,7 @@ export type CreatePatientMutationVariables = Exact<{
   firstName: Scalars['String'];
   lastName: Scalars['String'];
   email: Scalars['String'];
-  dateOfBirth: Scalars['DateTime'];
+  dateOfBirth: Scalars['String'];
   sex: Scalars['String'];
   notes?: Maybe<Scalars['String']>;
 }>;
@@ -387,7 +384,7 @@ export type AccountQueryHookResult = ReturnType<typeof useAccountQuery>;
 export type AccountLazyQueryHookResult = ReturnType<typeof useAccountLazyQuery>;
 export type AccountQueryResult = Apollo.QueryResult<AccountQuery, AccountQueryVariables>;
 export const CreatePatientDocument = gql`
-    mutation CreatePatient($firstName: String!, $lastName: String!, $email: String!, $dateOfBirth: DateTime!, $sex: String!, $notes: String) {
+    mutation CreatePatient($firstName: String!, $lastName: String!, $email: String!, $dateOfBirth: String!, $sex: String!, $notes: String) {
   createPatient(
     data: {firstName: $firstName, lastName: $lastName, email: $email, dateOfBirth: $dateOfBirth, sex: $sex, notes: $notes}
   ) {

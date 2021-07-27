@@ -1,5 +1,5 @@
 import React from "react";
-import { Loading, Wrapper } from "@app/components";
+import { Loading, Wrapper, Head } from "@app/components";
 import { usePatientQuery } from "@app/generated/graphql";
 import useAuth from "@app/utils/useAuth";
 import withApollo from "@app/utils/withApollo";
@@ -23,7 +23,12 @@ const Patient = () => {
 
   return (
     <Wrapper>
+      <Head
+        title={`Patient - ${patient?.firstName} ${patient?.lastName}`}
+        content="Dashboard for Platform"
+      />
       <PatientInformation patient={patient} />
+      <PatientCheckHistory />
       <Set>
         <Button palette="primary" onClick={() => router.back()}>
           Back
@@ -71,8 +76,29 @@ const PatientInformation: React.FC<PatientInformationProps> = ({ patient }) => {
       </Paragraph>
       <Paragraph>
         <Text fontWeight="bold">Notes:</Text>{" "}
-        {`${patient?.notes === null ? "N/A" : patient?.notes}`}
+        {`${
+          patient?.notes === null || patient?.notes === ""
+            ? "N/A"
+            : patient?.notes
+        }`}
       </Paragraph>
+    </Box>
+  );
+};
+
+const PatientCheckHistory = () => {
+  return (
+    <Box
+      padding="20px"
+      border="3px solid"
+      borderColor="primary"
+      borderRadius="2"
+      marginBottom="20px"
+    >
+      <Heading use="h4" paddingBottom="15px">
+        Check History
+      </Heading>
+      <Paragraph>TODO</Paragraph>
     </Box>
   );
 };

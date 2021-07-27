@@ -1,4 +1,4 @@
-import { IsDate, IsEmail, Length } from "class-validator";
+import { IsEmail, Length } from "class-validator";
 import { Field, InputType } from "type-graphql";
 
 type SexType = "Male" | "Female";
@@ -18,8 +18,7 @@ export class CreatePatientInput {
   email: string;
 
   @Field()
-  @IsDate()
-  dateOfBirth: Date;
+  dateOfBirth: string;
 
   @Field()
   sex: SexType;

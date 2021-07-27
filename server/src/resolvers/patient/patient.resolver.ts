@@ -51,7 +51,7 @@ export class PatientResolver {
     @Ctx() { em }: ServerContext,
   ): Promise<PatientsResponse> {
     const patients = await em.find(Patient, {
-      $or: [
+      $and: [
         { firstName: { $like: `${firstName}%` } },
         { lastName: { $like: `${lastName}%` } },
       ],

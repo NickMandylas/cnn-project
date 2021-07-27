@@ -25,12 +25,19 @@ export class CreatePatientResolver {
       };
     }
 
+    const dtParts = dateOfBirth.split("/");
+    const dt = new Date(
+      +dtParts[2],
+      Number(dtParts[1]) - 1,
+      Number(dtParts[0]),
+    );
+
     const patient = em.create(Patient, {
       firstName,
       lastName,
       email,
       sex,
-      dateOfBirth,
+      dateOfBirth: dt,
       notes,
     });
 

@@ -1,5 +1,12 @@
-import { Box, Columns, Heading, Button } from "bumbag";
-import { Loading, PatientSearch, Wrapper } from "@app/components";
+import React from "react";
+import { Box, Columns, Heading, Paragraph } from "bumbag";
+import {
+  Head,
+  Loading,
+  OptionBox,
+  PatientSearch,
+  Wrapper,
+} from "@app/components";
 import useAuth from "@app/utils/useAuth";
 import withApollo from "@app/utils/withApollo";
 import { useRouter } from "next/router";
@@ -14,6 +21,7 @@ const Dashboard = () => {
 
   return (
     <Wrapper>
+      <Head title="Dashboard" content="Dashboard for Platform" />
       <Box
         border="3px solid"
         borderColor="primary"
@@ -26,45 +34,21 @@ const Dashboard = () => {
         <PatientSearch firstName="" lastName="" router={router} />
       </Box>
       <Columns marginTop="20px">
-        <Columns.Column spread={4}>
-          <Box
-            border="3px solid"
-            borderColor="primary"
-            borderRadius="2"
-            padding="20px"
-          >
-            <Heading use="h4" marginBottom="25px" textAlign="center">
-              Create Patient
-            </Heading>
-            <Button width="100%">Create</Button>
-          </Box>
-        </Columns.Column>
-        <Columns.Column spread={4}>
-          <Box
-            border="3px solid"
-            borderColor="primary"
-            borderRadius="2"
-            padding="20px"
-          >
-            <Heading use="h4" marginBottom="25px" textAlign="center">
-              Add Historical Data
-            </Heading>
-            <Button width="100%">Add</Button>
-          </Box>
-        </Columns.Column>
-        <Columns.Column spread={4}>
-          <Box
-            border="3px solid"
-            borderColor="primary"
-            borderRadius="2"
-            padding="20px"
-          >
-            <Heading use="h4" marginBottom="25px" textAlign="center">
-              Perform Cancer Check
-            </Heading>
-            <Button width="100%">Start</Button>
-          </Box>
-        </Columns.Column>
+        <OptionBox
+          title="Create Patient"
+          buttonTitle="Create"
+          onClick={() => router.push("/dashboard/patient/create")}
+        />
+        <OptionBox
+          title="Add Historical Data"
+          buttonTitle="Create"
+          onClick={() => router.push("/dashboard")}
+        />
+        <OptionBox
+          title="Perform Cancer Check"
+          buttonTitle="Check"
+          onClick={() => router.push("/dashboard")}
+        />
       </Columns>
       <Box
         border="3px solid"
@@ -76,6 +60,7 @@ const Dashboard = () => {
         <Heading use="h4" marginBottom="25px">
           Recent Checks
         </Heading>
+        <Paragraph>TODO</Paragraph>
       </Box>
     </Wrapper>
   );
