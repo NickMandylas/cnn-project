@@ -16,6 +16,7 @@ const Patient = () => {
       firstName: firstName as string,
       lastName: lastName as string,
     },
+    notifyOnNetworkStatusChange: true,
   });
 
   if (!status || loading) {

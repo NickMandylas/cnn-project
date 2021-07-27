@@ -65,6 +65,7 @@ export type Mutation = {
   login: AccountResponse;
   register: AccountResponse;
   createPatient: PatientResponse;
+  deletePatient: Scalars['Boolean'];
   editPatient: PatientResponse;
 };
 
@@ -81,6 +82,11 @@ export type MutationRegisterArgs = {
 
 export type MutationCreatePatientArgs = {
   data: CreatePatientInput;
+};
+
+
+export type MutationDeletePatientArgs = {
+  id: Scalars['String'];
 };
 
 
@@ -220,6 +226,16 @@ export type CreatePatientMutation = (
       & Pick<FieldError, 'field' | 'message'>
     )>> }
   ) }
+);
+
+export type DeletePatientMutationVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type DeletePatientMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'deletePatient'>
 );
 
 export type EditPatientMutationVariables = Exact<{
@@ -477,6 +493,37 @@ export function useCreatePatientMutation(baseOptions?: Apollo.MutationHookOption
 export type CreatePatientMutationHookResult = ReturnType<typeof useCreatePatientMutation>;
 export type CreatePatientMutationResult = Apollo.MutationResult<CreatePatientMutation>;
 export type CreatePatientMutationOptions = Apollo.BaseMutationOptions<CreatePatientMutation, CreatePatientMutationVariables>;
+export const DeletePatientDocument = gql`
+    mutation DeletePatient($id: String!) {
+  deletePatient(id: $id)
+}
+    `;
+export type DeletePatientMutationFn = Apollo.MutationFunction<DeletePatientMutation, DeletePatientMutationVariables>;
+
+/**
+ * __useDeletePatientMutation__
+ *
+ * To run a mutation, you first call `useDeletePatientMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeletePatientMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deletePatientMutation, { data, loading, error }] = useDeletePatientMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeletePatientMutation(baseOptions?: Apollo.MutationHookOptions<DeletePatientMutation, DeletePatientMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeletePatientMutation, DeletePatientMutationVariables>(DeletePatientDocument, options);
+      }
+export type DeletePatientMutationHookResult = ReturnType<typeof useDeletePatientMutation>;
+export type DeletePatientMutationResult = Apollo.MutationResult<DeletePatientMutation>;
+export type DeletePatientMutationOptions = Apollo.BaseMutationOptions<DeletePatientMutation, DeletePatientMutationVariables>;
 export const EditPatientDocument = gql`
     mutation EditPatient($id: String!, $firstName: String!, $lastName: String!, $email: String!, $dateOfBirth: String!, $sex: String!, $notes: String) {
   editPatient(

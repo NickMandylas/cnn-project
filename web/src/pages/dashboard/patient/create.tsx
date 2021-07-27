@@ -74,6 +74,7 @@ const Create = () => {
             const response = await createPatient({
               variables: input,
               update: (cache, { data }) => {
+                cache.evict({ fieldName: "patients" });
                 cache.writeQuery<PatientQuery>({
                   query: PatientDocument,
                   data: {

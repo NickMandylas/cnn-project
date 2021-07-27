@@ -1,6 +1,9 @@
 import React from "react";
 import { Loading, Wrapper, Head } from "@app/components";
-import { usePatientQuery } from "@app/generated/graphql";
+import {
+  useDeletePatientMutation,
+  usePatientQuery,
+} from "@app/generated/graphql";
 import useAuth from "@app/utils/useAuth";
 import withApollo from "@app/utils/withApollo";
 import { useRouter } from "next/router";
@@ -15,6 +18,9 @@ const Patient = () => {
     variables: { id: id as string },
   });
 
+  const [deletePatient, { loading: loadingDelete }] =
+    useDeletePatientMutation();
+
   const patient = data?.patient?.patient;
 
   if (!auth || loading) {
@@ -25,20 +31,53 @@ const Patient = () => {
     <Wrapper>
       <Head
         title={`Patient - ${patient?.firstName} ${patient?.lastName}`}
-        content="Dashboard for Platform"
+        content="Patient Information View"
       />
-      <PatientInformation patient={patient} />
-      <PatientCheckHistory />
+      {patient ? (
+        <React.Fragment>
+          <PatientInformation patient={patient} />
+          <PatientCheckHistory />
+        </React.Fragment>
+      ) : (
+        <Heading use="h4" paddingBottom="15px">
+          Patient Not Found
+        </Heading>
+      )}
       <Set>
         <Button palette="primary" onClick={() => router.back()}>
           Back
         </Button>
-        <Button
-          palette="secondary"
-          onClick={() => router.push(`/dashboard/patient/edit/${patient?.id}`)}
-        >
-          Edit
-        </Button>
+        {patient ? (
+          <React.Fragment>
+            <Button
+              palette="secondary"
+              onClick={() =>
+                router.push(`/dashboard/patient/edit/${patient.id}`)
+              }
+            >
+              Edit
+            </Button>
+            <Button
+              palette="danger"
+              isLoading={loadingDelete}
+              disabled={loadingDelete}
+              onClick={async () => {
+                const response = await deletePatient({
+                  variables: { id: patient.id },
+                  update: (cache) => {
+                    cache.evict({ id: "Patient:" + patient.id });
+                  },
+                });
+
+                if (response.data?.deletePatient) {
+                  router.push("/dashboard");
+                }
+              }}
+            >
+              Delete
+            </Button>
+          </React.Fragment>
+        ) : null}
       </Set>
     </Wrapper>
   );
