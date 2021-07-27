@@ -1,7 +1,8 @@
 import React from "react";
-import { useAccountQuery } from "@app/generated/graphql";
+import { useAccountQuery, useLogoutMutation } from "@app/generated/graphql";
 import { TopNav, Text, Button, usePage, Hide } from "bumbag";
 import { useRouter } from "next/router";
+import { useApolloClient } from "@apollo/client";
 
 interface NavigationProps {
   selectedId?: string;
@@ -10,7 +11,9 @@ interface NavigationProps {
 const Navigation: React.FC<NavigationProps> = ({ selectedId }) => {
   const { data } = useAccountQuery();
   const { collapseBelow } = usePage();
+  const [logout, { loading: loading }] = useLogoutMutation();
   const router = useRouter();
+  const apolloClient = useApolloClient();
 
   return (
     <TopNav backgroundColor="primary" selectedId={selectedId}>
@@ -62,14 +65,30 @@ const Navigation: React.FC<NavigationProps> = ({ selectedId }) => {
             />
           </TopNav.Item>
           <TopNav.Item>
-            <Button palette="default" size="small">
+            <Button
+              palette="default"
+              size="small"
+              isLoading={loading}
+              onClick={async () => {
+                await logout();
+                await apolloClient.resetStore();
+              }}
+            >
               Sign Out
             </Button>
           </TopNav.Item>
         </Hide>
         <Hide above={collapseBelow}>
           <TopNav.Item>
-            <Button palette="default" size="small">
+            <Button
+              palette="default"
+              size="small"
+              isLoading={loading}
+              onClick={async () => {
+                await logout();
+                await apolloClient.resetStore();
+              }}
+            >
               Sign Out
             </Button>
           </TopNav.Item>
