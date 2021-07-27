@@ -25,7 +25,9 @@ const Patient = () => {
     <Wrapper>
       <PatientInformation patient={patient} />
       <Set>
-        <Button palette="primary">Back</Button>
+        <Button palette="primary" onClick={() => router.back()}>
+          Back
+        </Button>
         {/* <Button palette="primary">Edit</Button>
         <Button palette="danger">Delete</Button> */}
       </Set>
@@ -51,7 +53,6 @@ const PatientInformation: React.FC<PatientInformationProps> = ({ patient }) => {
       <Heading use="h4" paddingBottom="15px">
         Patient Information
       </Heading>
-
       <Paragraph>
         <Text fontWeight="bold">ID:</Text> {`${patient?.id}`}
       </Paragraph>
@@ -63,7 +64,7 @@ const PatientInformation: React.FC<PatientInformationProps> = ({ patient }) => {
       </Paragraph>
       <Paragraph>
         <Text fontWeight="bold">Date Of Birth:</Text>{" "}
-        {`${dt.getDate()}/${dt.getMonth()}/${dt.getUTCFullYear()}`}
+        {`${dt.getDate()}/${dt.getMonth() + 1}/${dt.getUTCFullYear()}`}
       </Paragraph>
       <Paragraph>
         <Text fontWeight="bold">Sex:</Text> {`${patient?.sex}`}

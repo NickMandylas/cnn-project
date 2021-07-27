@@ -1,25 +1,22 @@
-import { useAccountQuery } from "@app/generated/graphql";
-import {
-  TopNav,
-  Text,
-  Button,
-  usePage,
-  Hide,
-  DropdownMenu,
-  Icon,
-} from "bumbag";
 import React from "react";
+import { useAccountQuery } from "@app/generated/graphql";
+import { TopNav, Text, Button, usePage, Hide } from "bumbag";
+import { useRouter } from "next/router";
 
 interface NavigationProps {}
 
 const Navigation: React.FC<NavigationProps> = () => {
   const { data } = useAccountQuery();
   const { collapseBelow } = usePage();
+  const router = useRouter();
 
   return (
     <TopNav backgroundColor="primary">
       <TopNav.Section>
-        <TopNav.Item fontWeight="semibold">
+        <TopNav.Item
+          fontWeight="semibold"
+          onClick={() => router.push("/dashboard")}
+        >
           <Text font="default" color="default" marginLeft="15px">
             Skin Cancer Detection Platform
           </Text>
