@@ -1,6 +1,6 @@
-# FIT3164 Project
+# CNN Project
 
-A proposed online all-in-one platform that aims to easily allow medical professionals to upload images of skin lesions to a nerual network which will be analysed for the likelihood of whether the lesion is malignant form of cancer, as well as the likely variant. 
+A proposed online all-in-one platform that aims to easily allow medical professionals to upload images of skin lesions to a convolutional nerual network which will  analyse the likelihood of whether the lesion is a malignant form of cancer, as well as the likely variant. 
 
 ---
 
