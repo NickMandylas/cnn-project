@@ -15,7 +15,7 @@ const OptionBox: React.FC<OptionBoxProps> = ({
   onClick,
 }) => {
   return (
-    <Columns.Column spread={4}>
+    <Columns.Column spread={6}>
       <Box
         border="3px solid"
         borderColor="primary"
