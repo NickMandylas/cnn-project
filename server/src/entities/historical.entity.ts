@@ -1,44 +1,33 @@
-import {
-  Collection,
-  Entity,
-  OneToMany,
-  PrimaryKey,
-  Property,
-} from "@mikro-orm/core";
+import { Entity, ManyToOne, PrimaryKey, Property } from "@mikro-orm/core";
 import { Field, ID, ObjectType } from "type-graphql";
 import { v4 } from "uuid";
-import { Historical } from "./historical.entity";
+import { Patient } from "./patient.entity";
 
 @ObjectType()
 @Entity()
-export class Patient {
+export class Historical {
   @Field(() => ID)
   @PrimaryKey({ type: "uuid" })
   id: string = v4();
 
   @Field(() => String)
   @Property({ type: "text" })
-  firstName: string;
+  localisation: string;
 
   @Field(() => String)
   @Property({ type: "text" })
-  lastName: string;
-
-  @Field(() => String)
-  @Property({ type: "text", unique: true })
-  email: string;
+  variant: string;
 
   @Field(() => String)
   @Property({ type: "date" })
-  dateOfBirth: Date;
+  scanDate: Date;
 
   @Field(() => String)
   @Property({ type: "text" })
-  sex: string;
+  scan: string;
 
-  @Field(() => String, { nullable: true })
-  @Property({ type: "text", nullable: true })
-  notes: string;
+  @ManyToOne({ entity: () => Patient })
+  patient: Patient;
 
   @Field(() => String)
   @Property({ type: "date" })
@@ -47,7 +36,4 @@ export class Patient {
   @Field(() => String)
   @Property({ onUpdate: () => new Date(), type: "date" })
   updatedAt = new Date();
-
-  @OneToMany(() => Historical, (historical) => historical.patient)
-  historicals = new Collection<Historical>(this);
 }

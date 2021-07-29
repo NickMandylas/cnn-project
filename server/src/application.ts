@@ -6,14 +6,16 @@ import {
   FastifyReply,
   FastifyRequest,
 } from "fastify";
+import AltairFastify from "altair-fastify-plugin";
 import fastifyCookie from "fastify-cookie";
 import fastifyCors from "fastify-cors";
 import fastifySession from "fastify-session";
 import { IncomingMessage, Server, ServerResponse } from "http";
 import mercurius from "mercurius";
+import MercuriusGQLUpload from "mercurius-upload";
 import { RedisClient } from "redis";
 import ormConfig from "./orm.config";
-import { Redis, Schema } from "./utils";
+import { Redis, Schema, storage } from "./utils";
 import { __prod__ } from "./utils/constants";
 
 export default class Application {
@@ -85,16 +87,24 @@ export default class Application {
     try {
       const schema = await Schema();
 
+      this.host.register(MercuriusGQLUpload);
       this.host.register(mercurius, {
         schema,
-        graphiql: true,
+        graphiql: false,
         context: (req: FastifyRequest, res: FastifyReply) => ({
           req,
           res,
           redis: Redis(),
           store: store,
           em: this.orm.em.fork(),
+          storage: storage,
         }),
+      });
+
+      this.host.register(AltairFastify, {
+        path: "/altair",
+        baseURL: "/altair/",
+        endpointURL: "/graphql",
       });
 
       const PORT = process.env.PORT || 4000;
