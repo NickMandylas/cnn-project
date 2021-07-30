@@ -1,0 +1,15 @@
+mutation CreateHistorical(
+  $file: Upload!
+  $localisation: String!
+  $variant: String!
+  $scanDate: DateTime!
+  $patientId: String!
+) {
+  createHistorical(
+    file: $file
+    localisation: $localisation
+    scanDate: $scanDate
+    variant: $variant
+    patientId: $patientId
+  )
+}

@@ -12,6 +12,10 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  /** The javascript `Date` as string. Type represents date and time as the ISO Date string. */
+  DateTime: any;
+  /** The `Upload` scalar type represents a file upload. */
+  Upload: any;
 };
 
 export type Account = {
@@ -39,6 +43,7 @@ export type CreatePatientInput = {
   notes?: Maybe<Scalars['String']>;
 };
 
+
 export type EditPatientInput = {
   id: Scalars['String'];
   firstName: Scalars['String'];
@@ -55,6 +60,23 @@ export type FieldError = {
   message: Scalars['String'];
 };
 
+export type Historical = {
+  __typename?: 'Historical';
+  id: Scalars['ID'];
+  localisation: Scalars['String'];
+  variant: Scalars['String'];
+  scanDate: Scalars['String'];
+  scan: Scalars['String'];
+  createdAt: Scalars['String'];
+  updatedAt: Scalars['String'];
+};
+
+export type HistoricalResponse = {
+  __typename?: 'HistoricalResponse';
+  errors?: Maybe<Array<FieldError>>;
+  historical?: Maybe<Historical>;
+};
+
 export type LoginInput = {
   email: Scalars['String'];
   password: Scalars['String'];
@@ -65,6 +87,7 @@ export type Mutation = {
   login: AccountResponse;
   logout: Scalars['Boolean'];
   register: AccountResponse;
+  createHistorical: Scalars['Boolean'];
   createPatient: PatientResponse;
   deletePatient: Scalars['Boolean'];
   editPatient: PatientResponse;
@@ -78,6 +101,15 @@ export type MutationLoginArgs = {
 
 export type MutationRegisterArgs = {
   data: RegisterInput;
+};
+
+
+export type MutationCreateHistoricalArgs = {
+  file: Scalars['Upload'];
+  patientId: Scalars['String'];
+  scanDate: Scalars['DateTime'];
+  variant: Scalars['String'];
+  localisation: Scalars['String'];
 };
 
 
@@ -106,6 +138,7 @@ export type Patient = {
   notes?: Maybe<Scalars['String']>;
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
+  historicals: Array<Historical>;
 };
 
 export type PatientResponse = {
@@ -123,8 +156,14 @@ export type PatientsResponse = {
 export type Query = {
   __typename?: 'Query';
   account?: Maybe<AccountResponse>;
+  historical?: Maybe<HistoricalResponse>;
   patient?: Maybe<PatientResponse>;
   patients?: Maybe<PatientsResponse>;
+};
+
+
+export type QueryHistoricalArgs = {
+  id?: Maybe<Scalars['String']>;
 };
 
 
@@ -145,6 +184,7 @@ export type RegisterInput = {
   email: Scalars['String'];
   password: Scalars['String'];
 };
+
 
 export type LoginMutationVariables = Exact<{
   email: Scalars['String'];
@@ -213,6 +253,36 @@ export type AccountQuery = (
   )> }
 );
 
+export type CreateHistoricalMutationVariables = Exact<{
+  file: Scalars['Upload'];
+  localisation: Scalars['String'];
+  variant: Scalars['String'];
+  scanDate: Scalars['DateTime'];
+  patientId: Scalars['String'];
+}>;
+
+
+export type CreateHistoricalMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'createHistorical'>
+);
+
+export type HistoricalQueryVariables = Exact<{
+  id?: Maybe<Scalars['String']>;
+}>;
+
+
+export type HistoricalQuery = (
+  { __typename?: 'Query' }
+  & { historical?: Maybe<(
+    { __typename?: 'HistoricalResponse' }
+    & { historical?: Maybe<(
+      { __typename?: 'Historical' }
+      & Pick<Historical, 'id' | 'scan' | 'scanDate' | 'localisation' | 'variant' | 'createdAt'>
+    )> }
+  )> }
+);
+
 export type CreatePatientMutationVariables = Exact<{
   firstName: Scalars['String'];
   lastName: Scalars['String'];
@@ -230,6 +300,10 @@ export type CreatePatientMutation = (
     & { patient?: Maybe<(
       { __typename?: 'Patient' }
       & Pick<Patient, 'id' | 'firstName' | 'lastName' | 'email' | 'dateOfBirth' | 'sex' | 'notes' | 'createdAt'>
+      & { historicals: Array<(
+        { __typename?: 'Historical' }
+        & Pick<Historical, 'id' | 'scanDate' | 'localisation' | 'variant'>
+      )> }
     )>, errors?: Maybe<Array<(
       { __typename?: 'FieldError' }
       & Pick<FieldError, 'field' | 'message'>
@@ -479,6 +553,89 @@ export function useAccountLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Ac
 export type AccountQueryHookResult = ReturnType<typeof useAccountQuery>;
 export type AccountLazyQueryHookResult = ReturnType<typeof useAccountLazyQuery>;
 export type AccountQueryResult = Apollo.QueryResult<AccountQuery, AccountQueryVariables>;
+export const CreateHistoricalDocument = gql`
+    mutation CreateHistorical($file: Upload!, $localisation: String!, $variant: String!, $scanDate: DateTime!, $patientId: String!) {
+  createHistorical(
+    file: $file
+    localisation: $localisation
+    scanDate: $scanDate
+    variant: $variant
+    patientId: $patientId
+  )
+}
+    `;
+export type CreateHistoricalMutationFn = Apollo.MutationFunction<CreateHistoricalMutation, CreateHistoricalMutationVariables>;
+
+/**
+ * __useCreateHistoricalMutation__
+ *
+ * To run a mutation, you first call `useCreateHistoricalMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateHistoricalMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createHistoricalMutation, { data, loading, error }] = useCreateHistoricalMutation({
+ *   variables: {
+ *      file: // value for 'file'
+ *      localisation: // value for 'localisation'
+ *      variant: // value for 'variant'
+ *      scanDate: // value for 'scanDate'
+ *      patientId: // value for 'patientId'
+ *   },
+ * });
+ */
+export function useCreateHistoricalMutation(baseOptions?: Apollo.MutationHookOptions<CreateHistoricalMutation, CreateHistoricalMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateHistoricalMutation, CreateHistoricalMutationVariables>(CreateHistoricalDocument, options);
+      }
+export type CreateHistoricalMutationHookResult = ReturnType<typeof useCreateHistoricalMutation>;
+export type CreateHistoricalMutationResult = Apollo.MutationResult<CreateHistoricalMutation>;
+export type CreateHistoricalMutationOptions = Apollo.BaseMutationOptions<CreateHistoricalMutation, CreateHistoricalMutationVariables>;
+export const HistoricalDocument = gql`
+    query Historical($id: String) {
+  historical(id: $id) {
+    historical {
+      id
+      scan
+      scanDate
+      localisation
+      variant
+      createdAt
+    }
+  }
+}
+    `;
+
+/**
+ * __useHistoricalQuery__
+ *
+ * To run a query within a React component, call `useHistoricalQuery` and pass it any options that fit your needs.
+ * When your component renders, `useHistoricalQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useHistoricalQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useHistoricalQuery(baseOptions?: Apollo.QueryHookOptions<HistoricalQuery, HistoricalQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<HistoricalQuery, HistoricalQueryVariables>(HistoricalDocument, options);
+      }
+export function useHistoricalLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<HistoricalQuery, HistoricalQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<HistoricalQuery, HistoricalQueryVariables>(HistoricalDocument, options);
+        }
+export type HistoricalQueryHookResult = ReturnType<typeof useHistoricalQuery>;
+export type HistoricalLazyQueryHookResult = ReturnType<typeof useHistoricalLazyQuery>;
+export type HistoricalQueryResult = Apollo.QueryResult<HistoricalQuery, HistoricalQueryVariables>;
 export const CreatePatientDocument = gql`
     mutation CreatePatient($firstName: String!, $lastName: String!, $email: String!, $dateOfBirth: String!, $sex: String!, $notes: String) {
   createPatient(
@@ -493,6 +650,12 @@ export const CreatePatientDocument = gql`
       sex
       notes
       createdAt
+      historicals {
+        id
+        scanDate
+        localisation
+        variant
+      }
     }
     errors {
       field

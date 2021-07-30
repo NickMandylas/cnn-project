@@ -1,5 +1,6 @@
 import { ServerContext } from "@server/contracts/interfaces/serverContext";
 import { Patient } from "@server/entities/patient.entity";
+import { getSignedUrl } from "@server/shared/getFile";
 import pathHandler from "@server/shared/pathHandler";
 import {
   PatientResponse,
@@ -15,7 +16,7 @@ export class PatientResolver {
   async patient(
     @Arg("email", { nullable: true }) email: string,
     @Arg("id", { nullable: true }) id: string,
-    @Ctx() { em }: ServerContext,
+    @Ctx() { em, storage }: ServerContext,
     @Info() info: GraphQLResolveInfo,
   ): Promise<PatientResponse> {
     if (id === undefined && email === undefined) {
@@ -48,6 +49,18 @@ export class PatientResolver {
           },
         ],
       };
+    }
+
+    if (relationPaths.includes("historicals")) {
+      for (let i = 0; i < patient.historicals.length; i++) {
+        const url = await getSignedUrl(
+          storage,
+          "cnn-skin-lesion-images",
+          patient.historicals[i].scan,
+        );
+
+        patient.historicals[i].scan = url[0];
+      }
     }
 
     return { patient };

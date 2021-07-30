@@ -9,6 +9,13 @@ query Patient($id: String, $email: String) {
       sex
       notes
       createdAt
+      historicals {
+        id
+        scanDate
+        scan
+        localisation
+        variant
+      }
     }
     errors {
       field
