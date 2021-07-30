@@ -48,6 +48,7 @@ export class Patient {
   @Property({ onUpdate: () => new Date(), type: "date" })
   updatedAt = new Date();
 
+  @Field(() => [Historical])
   @OneToMany(() => Historical, (historical) => historical.patient)
   historicals = new Collection<Historical>(this);
 }

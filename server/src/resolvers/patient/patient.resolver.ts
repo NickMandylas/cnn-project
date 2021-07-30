@@ -1,10 +1,12 @@
 import { ServerContext } from "@server/contracts/interfaces/serverContext";
 import { Patient } from "@server/entities/patient.entity";
+import pathHandler from "@server/shared/pathHandler";
 import {
   PatientResponse,
   PatientsResponse,
 } from "@server/shared/responses/patient";
-import { Arg, Ctx, Query, Resolver } from "type-graphql";
+import { GraphQLResolveInfo } from "graphql";
+import { Arg, Ctx, Info, Query, Resolver } from "type-graphql";
 import isUUID from "validator/lib/isUUID";
 
 @Resolver()
@@ -14,6 +16,7 @@ export class PatientResolver {
     @Arg("email", { nullable: true }) email: string,
     @Arg("id", { nullable: true }) id: string,
     @Ctx() { em }: ServerContext,
+    @Info() info: GraphQLResolveInfo,
   ): Promise<PatientResponse> {
     if (id === undefined && email === undefined) {
       return {
@@ -26,9 +29,15 @@ export class PatientResolver {
       };
     }
 
-    const patient = await em.findOne(Patient, {
-      $or: [{ email }, { id: isUUID(id) ? id : "" }],
-    });
+    const relationPaths = pathHandler(info, true);
+
+    const patient = await em.findOne(
+      Patient,
+      {
+        $or: [{ email }, { id: isUUID(id) ? id : "" }],
+      },
+      { populate: relationPaths },
+    );
 
     if (!patient) {
       return {
