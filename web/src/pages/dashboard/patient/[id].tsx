@@ -2,6 +2,7 @@ import React from "react";
 import { Loading, Wrapper, Head } from "@app/components";
 import {
   useDeletePatientMutation,
+  useHistoricalsQuery,
   usePatientQuery,
 } from "@app/generated/graphql";
 import useAuth from "@app/utils/useAuth";
@@ -14,16 +15,21 @@ const Patient = () => {
   const auth = useAuth();
   const { id } = router.query;
 
-  const { data, loading } = usePatientQuery({
+  const patientQuery = usePatientQuery({
     variables: { id: id as string },
+  });
+
+  const historicalsQuery = useHistoricalsQuery({
+    variables: { patientId: id as string },
   });
 
   const [deletePatient, { loading: loadingDelete }] =
     useDeletePatientMutation();
 
-  const patient = data?.patient?.patient;
+  const patient = patientQuery.data?.patient?.patient;
+  const historicals = historicalsQuery.data?.historicals?.historicals;
 
-  if (!auth || loading) {
+  if (!auth || patientQuery.loading || historicalsQuery.loading) {
     return <Loading />;
   }
 
@@ -37,6 +43,7 @@ const Patient = () => {
         <React.Fragment>
           <PatientInformation patient={patient} />
           <PatientCheckHistory />
+          <PatientHistorical historicals={historicals} />
         </React.Fragment>
       ) : (
         <Heading use="h4" paddingBottom="15px">
@@ -140,6 +147,29 @@ const PatientCheckHistory = () => {
     >
       <Heading use="h4" paddingBottom="15px">
         Check History
+      </Heading>
+      <Paragraph>TODO</Paragraph>
+    </Box>
+  );
+};
+
+interface PatientHistoricalProps {
+  historicals: any;
+}
+
+const PatientHistorical: React.FC<PatientHistoricalProps> = ({
+  historicals,
+}) => {
+  return (
+    <Box
+      padding="20px"
+      border="3px solid"
+      borderColor="primary"
+      borderRadius="2"
+      marginBottom="20px"
+    >
+      <Heading use="h4" paddingBottom="15px">
+        Historical Checks
       </Heading>
       <Paragraph>TODO</Paragraph>
     </Box>

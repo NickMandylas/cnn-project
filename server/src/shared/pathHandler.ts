@@ -11,7 +11,7 @@ const pathHandler = (info: GraphQLResolveInfo, nested: boolean): string[] => {
   const paths = [];
 
   for (const i in relationPaths) {
-    const path = relationPaths[i].replace("patient", "").substring(1);
+    const path = relationPaths[i].replace("patient", "").substring(1); // TODO - Handle {Errors} removal.
     if (path !== "") {
       paths.push(path);
     }

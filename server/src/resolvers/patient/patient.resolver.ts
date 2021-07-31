@@ -1,14 +1,14 @@
 import { ServerContext } from "@server/contracts/interfaces/serverContext";
 import { Patient } from "@server/entities/patient.entity";
-import { getSignedUrl } from "@server/shared/getFile";
-import pathHandler from "@server/shared/pathHandler";
 import {
   PatientResponse,
   PatientsResponse,
 } from "@server/shared/responses/patient";
-import { GraphQLResolveInfo } from "graphql";
-import { Arg, Ctx, Info, Query, Resolver } from "type-graphql";
+import { Arg, Ctx, Query, Resolver } from "type-graphql";
 import isUUID from "validator/lib/isUUID";
+// import pathHandler from "@server/shared/pathHandler";
+// import { GraphQLResolveInfo } from "graphql";
+// import { getSignedUrl } from "@server/shared/getFile";
 
 @Resolver()
 export class PatientResolver {
@@ -16,9 +16,9 @@ export class PatientResolver {
   async patient(
     @Arg("email", { nullable: true }) email: string,
     @Arg("id", { nullable: true }) id: string,
-    @Ctx() { em, storage }: ServerContext,
-    @Info() info: GraphQLResolveInfo,
-  ): Promise<PatientResponse> {
+    @Ctx() { em }: ServerContext,
+  ): // @Info() info: GraphQLResolveInfo,
+  Promise<PatientResponse> {
     if (id === undefined && email === undefined) {
       return {
         errors: [
@@ -30,15 +30,11 @@ export class PatientResolver {
       };
     }
 
-    const relationPaths = pathHandler(info, true);
+    // const relationPaths = pathHandler(info, true);
 
-    const patient = await em.findOne(
-      Patient,
-      {
-        $or: [{ email }, { id: isUUID(id) ? id : "" }],
-      },
-      { populate: relationPaths },
-    );
+    const patient = await em.findOne(Patient, {
+      $or: [{ email }, { id: isUUID(id) ? id : "" }],
+    });
 
     if (!patient) {
       return {
@@ -51,17 +47,17 @@ export class PatientResolver {
       };
     }
 
-    if (relationPaths.includes("historicals")) {
-      for (let i = 0; i < patient.historicals.length; i++) {
-        const url = await getSignedUrl(
-          storage,
-          "cnn-skin-lesion-images",
-          patient.historicals[i].scan,
-        );
+    // if (relationPaths.includes("historicals")) {
+    //   for (let i = 0; i < patient.historicals.length; i++) {
+    //     const url = await getSignedUrl(
+    //       storage,
+    //       "cnn-skin-lesion-images",
+    //       patient.historicals[i].scan,
+    //     );
 
-        patient.historicals[i].scan = url[0];
-      }
-    }
+    //     patient.historicals[i].scan = url[0];
+    //   }
+    // }
 
     return { patient };
   }
