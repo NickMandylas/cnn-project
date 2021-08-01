@@ -5,6 +5,7 @@ query Historicals($patientId: String!) {
       variant
       scan
       scanDate
+      localisation
     }
     errors {
       field

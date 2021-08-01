@@ -306,7 +306,7 @@ export type HistoricalsQuery = (
     { __typename?: 'HistoricalsResponse' }
     & { historicals?: Maybe<Array<(
       { __typename?: 'Historical' }
-      & Pick<Historical, 'id' | 'variant' | 'scan' | 'scanDate'>
+      & Pick<Historical, 'id' | 'variant' | 'scan' | 'scanDate' | 'localisation'>
     )>>, errors?: Maybe<Array<(
       { __typename?: 'FieldError' }
       & Pick<FieldError, 'field' | 'message'>
@@ -671,6 +671,7 @@ export const HistoricalsDocument = gql`
       variant
       scan
       scanDate
+      localisation
     }
     errors {
       field
