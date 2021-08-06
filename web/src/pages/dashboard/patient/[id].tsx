@@ -64,7 +64,7 @@ const Patient = () => {
         <Button palette="primary" onClick={() => router.back()}>
           Back
         </Button>
-        {patient ? (
+        {patient && (
           <React.Fragment>
             <Button
               palette="secondary"
@@ -94,7 +94,7 @@ const Patient = () => {
               Delete
             </Button>
           </React.Fragment>
-        ) : null}
+        )}
       </Set>
     </Wrapper>
   );
@@ -200,7 +200,7 @@ const PatientHistorical: React.FC<PatientHistoricalProps> = ({
             <Table.HeadCell>Scan Date</Table.HeadCell>
             <Table.HeadCell>Cancer Variant</Table.HeadCell>
             <Table.HeadCell>Localisation</Table.HeadCell>
-            <Table.HeadCell textAlign="right"></Table.HeadCell>
+            {/* <Table.HeadCell textAlign="right"></Table.HeadCell> */}
           </Table.Row>
         </Table.Head>
         <Table.Body>
@@ -222,11 +222,11 @@ const PatientHistorical: React.FC<PatientHistoricalProps> = ({
                 </Table.Cell>
                 <Table.Cell>{historical.variant}</Table.Cell>
                 <Table.Cell>{historical.localisation}</Table.Cell>
-                <Table.Cell textAlign="right">
+                {/* <Table.Cell textAlign="right">
                   <Button size="small" palette="secondary">
                     View Historical
                   </Button>
-                </Table.Cell>
+                </Table.Cell> */}
               </Table.Row>
             );
           })}
