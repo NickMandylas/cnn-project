@@ -1,2 +1,4 @@
 node_modules
 .env
+gcloud-config.json
+yarn-error.log

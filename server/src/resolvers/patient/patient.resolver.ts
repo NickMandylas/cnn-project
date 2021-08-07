@@ -6,6 +6,9 @@ import {
 } from "@server/shared/responses/patient";
 import { Arg, Ctx, Query, Resolver } from "type-graphql";
 import isUUID from "validator/lib/isUUID";
+// import pathHandler from "@server/shared/pathHandler";
+// import { GraphQLResolveInfo } from "graphql";
+// import { getSignedUrl } from "@server/shared/getFile";
 
 @Resolver()
 export class PatientResolver {
@@ -14,7 +17,8 @@ export class PatientResolver {
     @Arg("email", { nullable: true }) email: string,
     @Arg("id", { nullable: true }) id: string,
     @Ctx() { em }: ServerContext,
-  ): Promise<PatientResponse> {
+  ): // @Info() info: GraphQLResolveInfo,
+  Promise<PatientResponse> {
     if (id === undefined && email === undefined) {
       return {
         errors: [
@@ -25,6 +29,8 @@ export class PatientResolver {
         ],
       };
     }
+
+    // const relationPaths = pathHandler(info, true);
 
     const patient = await em.findOne(Patient, {
       $or: [{ email }, { id: isUUID(id) ? id : "" }],
@@ -40,6 +46,18 @@ export class PatientResolver {
         ],
       };
     }
+
+    // if (relationPaths.includes("historicals")) {
+    //   for (let i = 0; i < patient.historicals.length; i++) {
+    //     const url = await getSignedUrl(
+    //       storage,
+    //       "cnn-skin-lesion-images",
+    //       patient.historicals[i].scan,
+    //     );
+
+    //     patient.historicals[i].scan = url[0];
+    //   }
+    // }
 
     return { patient };
   }

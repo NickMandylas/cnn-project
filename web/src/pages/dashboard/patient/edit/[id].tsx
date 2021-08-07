@@ -57,8 +57,6 @@ const Edit = () => {
 
   const patient = data?.patient?.patient;
 
-  if (patient) {
-  }
   return (
     <Wrapper>
       <Box

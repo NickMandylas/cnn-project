@@ -1,0 +1,12 @@
+query Historical($id: String) {
+  historical(id: $id) {
+    historical {
+      id
+      scan
+      scanDate
+      localisation
+      variant
+      createdAt
+    }
+  }
+}

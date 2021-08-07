@@ -1,6 +1,13 @@
-import { Entity, PrimaryKey, Property } from "@mikro-orm/core";
+import {
+  Collection,
+  Entity,
+  OneToMany,
+  PrimaryKey,
+  Property,
+} from "@mikro-orm/core";
 import { Field, ID, ObjectType } from "type-graphql";
 import { v4 } from "uuid";
+import { Historical } from "./historical.entity";
 
 @ObjectType()
 @Entity()
@@ -40,4 +47,8 @@ export class Patient {
   @Field(() => String)
   @Property({ onUpdate: () => new Date(), type: "date" })
   updatedAt = new Date();
+
+  @Field(() => [Historical])
+  @OneToMany(() => Historical, (historical) => historical.patient)
+  historicals = new Collection<Historical>(this);
 }

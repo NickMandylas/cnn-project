@@ -1,0 +1,15 @@
+query Historicals($patientId: String!) {
+  historicals(patientId: $patientId) {
+    historicals {
+      id
+      variant
+      scan
+      scanDate
+      localisation
+    }
+    errors {
+      field
+      message
+    }
+  }
+}
