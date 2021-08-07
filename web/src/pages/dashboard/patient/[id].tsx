@@ -30,6 +30,7 @@ const Patient = () => {
 
   const historicalsQuery = useHistoricalsQuery({
     variables: { patientId: id as string },
+    fetchPolicy: "network-only",
   });
 
   const [deletePatient, { loading: loadingDelete }] =
@@ -73,6 +74,16 @@ const Patient = () => {
               }
             >
               Edit
+            </Button>
+            <Button
+              palette="success"
+              onClick={() =>
+                router.push(
+                  `/dashboard/patient/historical/upload/${patient.id}`
+                )
+              }
+            >
+              Upload Historical
             </Button>
             <Button
               palette="danger"

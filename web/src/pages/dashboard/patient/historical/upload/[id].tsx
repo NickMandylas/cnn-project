@@ -15,12 +15,10 @@ import {
   FieldStack,
   FieldWrapper,
   InputField,
-  SelectMenu,
   SelectField,
 } from "bumbag";
 import { Field, Form, Formik } from "formik";
 import * as yup from "yup";
-import { DateTime } from "luxon";
 
 const Patient = () => {
   const router = useRouter();
@@ -79,6 +77,8 @@ interface HistoricalUploadFormProps {
 }
 
 const HistoricalUploadForm: React.FC<HistoricalUploadFormProps> = ({ id }) => {
+  const router = useRouter();
+
   const [createHistorical, { loading: loadingCreate }] =
     useCreateHistoricalMutation();
 
@@ -96,28 +96,28 @@ const HistoricalUploadForm: React.FC<HistoricalUploadFormProps> = ({ id }) => {
       >
         <Formik
           initialValues={{
-            file: "",
+            file: undefined,
             scanDate: "",
-            localisation: { value: "" },
-            variant: { value: "" },
+            localisation: "abdomen",
+            variant: "nv",
           }}
           validationSchema={HistoricalUploadSchema}
           validateOnBlur={false}
           validateOnChange={false}
           onSubmit={async (input) => {
-            console.log(id);
-
             const response = await createHistorical({
               variables: {
                 file: input.file,
-                localisation: "Head",
-                variant: "nv",
+                localisation: input.localisation,
+                variant: input.variant,
                 scanDate: input.scanDate,
                 patientId: id,
               },
             });
 
-            console.log(response);
+            if (response.data?.createHistorical) {
+              router.push(`/dashboard/patient/${id}`);
+            }
           }}
         >
           {(formik) => (
@@ -208,7 +208,12 @@ const HistoricalUploadForm: React.FC<HistoricalUploadFormProps> = ({ id }) => {
                   />
                 </FieldWrapper>
                 <Set>
-                  <Button palette="success" type="submit">
+                  <Button
+                    palette="success"
+                    type="submit"
+                    isLoading={loadingCreate}
+                    disabled={loadingCreate}
+                  >
                     Upload
                   </Button>
                 </Set>

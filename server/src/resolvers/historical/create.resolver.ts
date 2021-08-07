@@ -21,6 +21,13 @@ export class CreateHistoricalResolver {
     const uuid = v4();
     const scanName = `${uuid}_${filename}`;
 
+    const dtParts = scanDate.split("/");
+    const dt = new Date(
+      +dtParts[2],
+      Number(dtParts[1]) - 1,
+      Number(dtParts[0]),
+    );
+
     new Promise(() =>
       createReadStream()
         .pipe(
@@ -37,7 +44,7 @@ export class CreateHistoricalResolver {
             id: uuid,
             localisation,
             variant,
-            scanDate,
+            scanDate: dt,
             scan: scanName,
             patient: patientId,
           });

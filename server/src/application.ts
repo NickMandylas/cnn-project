@@ -101,11 +101,13 @@ export default class Application {
         }),
       });
 
-      this.host.register(AltairFastify, {
-        path: "/altair",
-        baseURL: "/altair/",
-        endpointURL: "/graphql",
-      });
+      if (!__prod__) {
+        this.host.register(AltairFastify, {
+          path: "/altair",
+          baseURL: "/altair/",
+          endpointURL: "/graphql",
+        });
+      }
 
       const PORT = process.env.PORT || 4000;
 
