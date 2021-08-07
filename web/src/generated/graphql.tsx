@@ -12,8 +12,6 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
-  /** The javascript `Date` as string. Type represents date and time as the ISO Date string. */
-  DateTime: any;
   /** The `Upload` scalar type represents a file upload. */
   Upload: any;
 };
@@ -42,7 +40,6 @@ export type CreatePatientInput = {
   sex: Scalars['String'];
   notes?: Maybe<Scalars['String']>;
 };
-
 
 export type EditPatientInput = {
   id: Scalars['String'];
@@ -113,7 +110,7 @@ export type MutationRegisterArgs = {
 export type MutationCreateHistoricalArgs = {
   file: Scalars['Upload'];
   patientId: Scalars['String'];
-  scanDate: Scalars['DateTime'];
+  scanDate: Scalars['String'];
   variant: Scalars['String'];
   localisation: Scalars['String'];
 };
@@ -269,7 +266,7 @@ export type CreateHistoricalMutationVariables = Exact<{
   file: Scalars['Upload'];
   localisation: Scalars['String'];
   variant: Scalars['String'];
-  scanDate: Scalars['DateTime'];
+  scanDate: Scalars['String'];
   patientId: Scalars['String'];
 }>;
 
@@ -581,7 +578,7 @@ export type AccountQueryHookResult = ReturnType<typeof useAccountQuery>;
 export type AccountLazyQueryHookResult = ReturnType<typeof useAccountLazyQuery>;
 export type AccountQueryResult = Apollo.QueryResult<AccountQuery, AccountQueryVariables>;
 export const CreateHistoricalDocument = gql`
-    mutation CreateHistorical($file: Upload!, $localisation: String!, $variant: String!, $scanDate: DateTime!, $patientId: String!) {
+    mutation CreateHistorical($file: Upload!, $localisation: String!, $variant: String!, $scanDate: String!, $patientId: String!) {
   createHistorical(
     file: $file
     localisation: $localisation

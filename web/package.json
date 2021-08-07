@@ -10,7 +10,8 @@
     "generate": "graphql-codegen --config codegen.yml"
   },
   "dependencies": {
-    "@apollo/client": "^3.3.21",
+    "@apollo/client": "^3.4.5",
+    "apollo-upload-client": "^16.0.0",
     "bumbag": "^2.2.1",
     "bumbag-server": "^2.0.0",
     "formik": "^2.2.9",
@@ -27,6 +28,7 @@
     "@graphql-codegen/typescript": "1.23.0",
     "@graphql-codegen/typescript-operations": "1.18.4",
     "@graphql-codegen/typescript-react-apollo": "2.3.1",
+    "@types/apollo-upload-client": "^14.1.0",
     "@types/luxon": "^1.27.1",
     "@types/react": "17.0.15",
     "eslint": "7.31.0",

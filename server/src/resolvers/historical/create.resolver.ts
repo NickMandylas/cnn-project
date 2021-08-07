@@ -12,7 +12,7 @@ export class CreateHistoricalResolver {
   async createHistorical(
     @Arg("localisation") localisation: string,
     @Arg("variant") variant: string,
-    @Arg("scanDate") scanDate: Date,
+    @Arg("scanDate") scanDate: string,
     @Arg("patientId") patientId: string,
     @Arg("file", () => GraphQLUpload)
     { createReadStream, filename }: FileUpload,

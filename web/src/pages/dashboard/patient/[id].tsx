@@ -205,7 +205,6 @@ const PatientHistorical: React.FC<PatientHistoricalProps> = ({
         </Table.Head>
         <Table.Body>
           {historicals.map((historical, id) => {
-            console.log(historical);
             return (
               <Table.Row key={id}>
                 <Table.Cell>

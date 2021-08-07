@@ -20,6 +20,7 @@ import {
 } from "bumbag";
 import { Field, Form, Formik } from "formik";
 import * as yup from "yup";
+import { DateTime } from "luxon";
 
 const Patient = () => {
   const router = useRouter();
@@ -95,7 +96,7 @@ const HistoricalUploadForm: React.FC<HistoricalUploadFormProps> = ({ id }) => {
       >
         <Formik
           initialValues={{
-            file: undefined,
+            file: "",
             scanDate: "",
             localisation: { value: "" },
             variant: { value: "" },
@@ -104,11 +105,13 @@ const HistoricalUploadForm: React.FC<HistoricalUploadFormProps> = ({ id }) => {
           validateOnBlur={false}
           validateOnChange={false}
           onSubmit={async (input) => {
+            console.log(id);
+
             const response = await createHistorical({
               variables: {
                 file: input.file,
-                localisation: input.localisation.value,
-                variant: input.variant.value,
+                localisation: "Head",
+                variant: "nv",
                 scanDate: input.scanDate,
                 patientId: id,
               },
@@ -128,10 +131,7 @@ const HistoricalUploadForm: React.FC<HistoricalUploadFormProps> = ({ id }) => {
                       type="file"
                       value={undefined}
                       onChange={(event: any) => {
-                        formik.setFieldValue(
-                          "file",
-                          event.currentTarget.files[0]
-                        );
+                        formik.setFieldValue("file", event.target.files[0]);
                       }}
                     />
                   </FieldWrapper>

@@ -2,7 +2,7 @@ mutation CreateHistorical(
   $file: Upload!
   $localisation: String!
   $variant: String!
-  $scanDate: DateTime!
+  $scanDate: String!
   $patientId: String!
 ) {
   createHistorical(
