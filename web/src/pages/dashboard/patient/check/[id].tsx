@@ -15,9 +15,13 @@ import {
   Heading,
   Set,
   Button,
-  Image,
-  Table,
+  FieldStack,
+  FieldWrapper,
+  InputField,
+  SelectField,
 } from "bumbag";
+import * as yup from "yup";
+import { Field, Form, Formik } from "formik";
 
 const Patient = () => {
   const router = useRouter();
@@ -52,9 +56,8 @@ const Patient = () => {
       {patient ? (
         <React.Fragment>
           <PatientInformation patient={patient as any} />{" "}
+          <HistoricalUploadForm id={patient.id} />
           {/* TODO - Fix lazy typing*/}
-          <PatientCheckHistory />
-          <PatientHistorical historicals={historicals as any} />
         </React.Fragment>
       ) : (
         <Heading use="h4" paddingBottom="15px">
@@ -65,47 +68,6 @@ const Patient = () => {
         <Button palette="primary" onClick={() => router.back()}>
           Back
         </Button>
-        {patient && (
-          <React.Fragment>
-            <Button
-              palette="secondary"
-              onClick={() =>
-                router.push(`/dashboard/patient/edit/${patient.id}`)
-              }
-            >
-              Edit
-            </Button>
-            <Button
-              palette="success"
-              onClick={() =>
-                router.push(
-                  `/dashboard/patient/historical/upload/${patient.id}`
-                )
-              }
-            >
-              Upload Historical
-            </Button>
-            <Button
-              palette="danger"
-              isLoading={loadingDelete}
-              disabled={loadingDelete}
-              onClick={async () => {
-                const response = await deletePatient({
-                  variables: { id: patient.id },
-                  update: (cache) => {
-                    cache.evict({ id: "Patient:" + patient.id });
-                  },
-                });
-
-                if (response.data?.deletePatient) {
-                  router.push("/dashboard");
-                }
-              }}
-            >
-              Delete
-            </Button>
-          </React.Fragment>
-        )}
       </Set>
     </Wrapper>
   );
@@ -166,11 +128,21 @@ const PatientInformation: React.FC<PatientInformationProps> = ({ patient }) => {
   );
 };
 
-const PatientCheckHistory = () => {
+const HistoricalUploadSchema = yup.object().shape({
+  localisation: yup.mixed().required("Localisation is required!"),
+  file: yup.mixed().required("An image is required"),
+});
+interface HistoricalUploadFormProps {
+  id: string;
+}
+
+const HistoricalUploadForm: React.FC<HistoricalUploadFormProps> = ({ id }) => {
+  const router = useRouter();
+
   return (
     <React.Fragment>
       <Heading use="h5" paddingBottom="5px">
-        Deep Learning Checks
+        Deep Learning - Cancer Check
       </Heading>
       <Box
         padding="20px"
@@ -178,70 +150,100 @@ const PatientCheckHistory = () => {
         borderColor="primary"
         borderRadius="2"
         marginBottom="20px"
+        backgroundColor="primary"
       >
-        <Paragraph>TODO</Paragraph>
-      </Box>
-    </React.Fragment>
-  );
-};
-
-type HistoricalsType = {
-  id: string;
-  scanDate: string;
-  scan: string;
-  variant: string;
-  localisation: string;
-};
-interface PatientHistoricalProps {
-  historicals: HistoricalsType[];
-}
-
-const PatientHistorical: React.FC<PatientHistoricalProps> = ({
-  historicals,
-}) => {
-  return (
-    <React.Fragment>
-      <Heading use="h5" paddingBottom="5px">
-        Historical Checks
-      </Heading>
-      <Table borderColor="primary" borderWidth="3px" marginTop="15px">
-        <Table.Head>
-          <Table.Row>
-            <Table.HeadCell>Scan Image</Table.HeadCell>
-            <Table.HeadCell>Scan Date</Table.HeadCell>
-            <Table.HeadCell>Cancer Variant</Table.HeadCell>
-            <Table.HeadCell>Localisation</Table.HeadCell>
-            {/* <Table.HeadCell textAlign="right"></Table.HeadCell> */}
-          </Table.Row>
-        </Table.Head>
-        <Table.Body>
-          {historicals.map((historical, id) => {
-            return (
-              <Table.Row key={id}>
-                <Table.Cell>
-                  <Image
-                    src={historical.scan}
-                    style={{ width: "250px" }}
-                    alt={`${historical.scan}`}
+        <Formik
+          initialValues={{
+            file: undefined,
+            localisation: "abdomen",
+          }}
+          validationSchema={HistoricalUploadSchema}
+          validateOnBlur={false}
+          validateOnChange={false}
+          onSubmit={async (input) => {
+            // const response = await createHistorical({
+            //   variables: {
+            //     file: input.file,
+            //     localisation: input.localisation,
+            //     variant: input.variant,
+            //     scanDate: input.scanDate,
+            //     patientId: id,
+            //   },
+            // });
+            // if (response.data?.createHistorical) {
+            //   router.push(`/dashboard/patient/${id}`);
+            // }
+          }}
+        >
+          {(formik) => (
+            <Form>
+              <FieldStack>
+                <FieldStack orientation="horizontal">
+                  <FieldWrapper label="Scan Image" color="white">
+                    <React.Fragment>
+                      <input
+                        name="file"
+                        placeholder="John"
+                        type="file"
+                        value={undefined}
+                        onChange={(event: any) => {
+                          formik.setFieldValue("file", event.target.files[0]);
+                        }}
+                      />
+                      {formik.errors.file && (
+                        <Paragraph marginTop="10px" color="warning">
+                          {formik.errors.file}
+                        </Paragraph>
+                      )}
+                    </React.Fragment>
+                  </FieldWrapper>
+                </FieldStack>
+                <FieldWrapper label="Localisation" color="white">
+                  <Field
+                    component={SelectField.Formik}
+                    name="localisation"
+                    placeholder="Select Localisation..."
+                    options={[
+                      { key: 1, label: "Abdomen", value: "abdomen" },
+                      { key: 2, label: "Acral", value: "acral" },
+                      { key: 3, label: "Back", value: "back" },
+                      { key: 4, label: "Chest", value: "chest" },
+                      { key: 5, label: "Ear", value: "ear" },
+                      { key: 6, label: "Face", value: "face" },
+                      { key: 7, label: "Foot", value: "foot" },
+                      { key: 8, label: "Genital", value: "genital" },
+                      { key: 9, label: "Hand", value: "ahnd" },
+                      {
+                        key: 10,
+                        label: "Lower Extremity",
+                        value: "lower extremity",
+                      },
+                      { key: 11, label: "Neck", value: "neck" },
+                      { key: 12, label: "Scalp", value: "scalp" },
+                      { key: 13, label: "Trunk", value: "trunk" },
+                      { key: 14, label: "Unknown", value: "unkown" },
+                      {
+                        key: 15,
+                        label: "Upper Extremity",
+                        value: "upper extremity",
+                      },
+                    ]}
                   />
-                </Table.Cell>
-                <Table.Cell>
-                  {new Date(
-                    Number(historical.scanDate as string)
-                  ).toDateString()}
-                </Table.Cell>
-                <Table.Cell>{historical.variant}</Table.Cell>
-                <Table.Cell>{historical.localisation}</Table.Cell>
-                {/* <Table.Cell textAlign="right">
-                  <Button size="small" palette="secondary">
-                    View Historical
+                </FieldWrapper>
+                <Set>
+                  <Button
+                    type="submit"
+                    // isLoading={loadingCreate}
+                    // disabled={loadingCreate}
+                  >
+                    Perform Check
                   </Button>
-                </Table.Cell> */}
-              </Table.Row>
-            );
-          })}
-        </Table.Body>
-      </Table>
+                </Set>
+              </FieldStack>
+            </Form>
+          )}
+        </Formik>
+      </Box>
     </React.Fragment>
   );
 };
