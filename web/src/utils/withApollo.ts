@@ -7,7 +7,7 @@ const apolloClient = new ApolloClient({
   cache: new InMemoryCache(),
   //@ts-ignore
   link: createUploadLink({
-    uri: "http://localhost:4000/graphql",
+    uri: "http://192.168.114.127:4000/graphql",
     credentials: "include",
   }),
 });

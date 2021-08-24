@@ -31,7 +31,7 @@ const Dashboard = () => {
         <Heading use="h4" marginBottom="25px">
           Patient Search
         </Heading>
-        <PatientSearch firstName="" lastName="" router={router} />
+        <PatientSearch type="view" firstName="" lastName="" router={router} />
       </Box>
       <Columns marginTop="20px">
         <OptionBox

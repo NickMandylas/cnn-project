@@ -31,12 +31,12 @@ const Patient = () => {
       />
       <Text>
         <Heading use="h4" paddingBottom="15px">
-          Patient Search
+          Patient Check - Search
         </Heading>
         <PatientSearch
-          type="view"
           firstName={firstName}
           lastName={lastName}
+          type="check"
           router={router}
         />
         <Box
@@ -82,10 +82,10 @@ const PatientsResultsTable: React.FC<PatientsResultsTableProps> = ({
                     size="small"
                     palette="secondary"
                     onClick={() =>
-                      router.push(`/dashboard/patient/${patient.id}`)
+                      router.push(`/dashboard/patient/check/${patient.id}`)
                     }
                   >
-                    View Patient
+                    Check Patient
                   </Button>
                 </Table.Cell>
               </Table.Row>

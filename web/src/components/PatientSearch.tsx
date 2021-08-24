@@ -6,12 +6,14 @@ import React from "react";
 interface PatientSearchProps {
   firstName: string | string[] | undefined;
   lastName: string | string[] | undefined;
+  type: "view" | "check";
   router: NextRouter;
 }
 
 const PatientSearch: React.FC<PatientSearchProps> = ({
   firstName,
   lastName,
+  type,
   router,
 }) => {
   return (
@@ -28,7 +30,9 @@ const PatientSearch: React.FC<PatientSearchProps> = ({
           });
         } else {
           router.push(
-            `/dashboard/patient?firstName=${values.firstName}&lastName=${values.lastName}`
+            `/dashboard/patient${type === "check" ? "/check" : ""}?firstName=${
+              values.firstName
+            }&lastName=${values.lastName}`
           );
         }
       }}
