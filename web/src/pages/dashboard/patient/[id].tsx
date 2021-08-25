@@ -1,6 +1,7 @@
 import React from "react";
 import { Loading, Wrapper, Head } from "@app/components";
 import {
+  useChecksQuery,
   useDeletePatientMutation,
   useHistoricalsQuery,
   usePatientQuery,
@@ -33,13 +34,24 @@ const Patient = () => {
     fetchPolicy: "network-only",
   });
 
+  const checksQuery = useChecksQuery({
+    variables: { patientId: id as string },
+    fetchPolicy: "network-only",
+  });
+
   const [deletePatient, { loading: loadingDelete }] =
     useDeletePatientMutation();
 
   const patient = patientQuery.data?.patient?.patient;
   const historicals = historicalsQuery.data?.historicals?.historicals;
+  const checks = checksQuery.data?.checks?.checks;
 
-  if (!auth || patientQuery.loading || historicalsQuery.loading) {
+  if (
+    !auth ||
+    patientQuery.loading ||
+    historicalsQuery.loading ||
+    checksQuery.loading
+  ) {
     return <Loading />;
   }
 
@@ -53,7 +65,7 @@ const Patient = () => {
         <React.Fragment>
           <PatientInformation patient={patient as any} />{" "}
           {/* TODO - Fix lazy typing*/}
-          <PatientCheckHistory />
+          <PatientCheckHistory checks={checks as any} />
           <PatientHistorical historicals={historicals as any} />
         </React.Fragment>
       ) : (
@@ -166,21 +178,70 @@ const PatientInformation: React.FC<PatientInformationProps> = ({ patient }) => {
   );
 };
 
-const PatientCheckHistory = () => {
+type CheckType = {
+  id: string;
+  confidence: string;
+  localisation: string;
+  scan: string;
+  scanDate: string;
+  variant: string;
+};
+
+interface PatientCheckHistoryProps {
+  checks: CheckType[];
+}
+
+const PatientCheckHistory: React.FC<PatientCheckHistoryProps> = ({
+  checks,
+}) => {
   return (
     <React.Fragment>
       <Heading use="h5" paddingBottom="5px">
         Deep Learning Checks
       </Heading>
-      <Box
-        padding="20px"
-        border="3px solid"
+      <Table
         borderColor="primary"
-        borderRadius="2"
+        borderWidth="3px"
+        marginTop="15px"
         marginBottom="20px"
       >
-        <Paragraph>TODO</Paragraph>
-      </Box>
+        <Table.Head>
+          <Table.Row>
+            <Table.HeadCell>Scan Image</Table.HeadCell>
+            <Table.HeadCell>Scan Date</Table.HeadCell>
+            <Table.HeadCell>Cancer Variant</Table.HeadCell>
+            <Table.HeadCell>Localisation</Table.HeadCell>
+            <Table.HeadCell>Confidence</Table.HeadCell>
+            {/* <Table.HeadCell textAlign="right"></Table.HeadCell> */}
+          </Table.Row>
+        </Table.Head>
+        <Table.Body>
+          {checks.map((check, id) => {
+            return (
+              <Table.Row key={id}>
+                <Table.Cell>
+                  <Image
+                    src={check.scan}
+                    style={{ width: "250px" }}
+                    alt={`${check.scan}`}
+                  />
+                </Table.Cell>
+                <Table.Cell>
+                  {new Date(Number(check.scanDate as string)).toDateString()}
+                </Table.Cell>
+                <Table.Cell>{check.variant}</Table.Cell>
+                <Table.Cell>{check.localisation}</Table.Cell>
+                <Table.Cell>{check.confidence}</Table.Cell>
+                {/* <Table.Cell textAlign="right">
+                  <Button size="small" palette="secondary">
+                    View Historical
+                  </Button>
+                </Table.Cell> */}
+              </Table.Row>
+            );
+          })}
+        </Table.Body>
+      </Table>
     </React.Fragment>
   );
 };

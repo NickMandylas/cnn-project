@@ -19,7 +19,7 @@ export class CreateHistoricalResolver {
     @Ctx() { em, storage }: ServerContext,
   ): Promise<boolean> {
     const uuid = v4();
-    const scanName = `${uuid}_${filename}`;
+    const scanName = `historicals/${uuid}_${filename}`;
 
     const dtParts = scanDate.split("/");
     const dt = new Date(

@@ -6,12 +6,14 @@ import React from "react";
 interface PatientSearchProps {
   firstName: string | string[] | undefined;
   lastName: string | string[] | undefined;
+  type: "view" | "check";
   router: NextRouter;
 }
 
 const PatientSearch: React.FC<PatientSearchProps> = ({
   firstName,
   lastName,
+  type,
   router,
 }) => {
   return (
@@ -23,12 +25,14 @@ const PatientSearch: React.FC<PatientSearchProps> = ({
       onSubmit={(values, { setErrors }) => {
         if (values.firstName === "" && values.lastName === "") {
           setErrors({
-            firstName: "Need an entry for at one search entry.",
-            lastName: "Need an entry for at one search entry.",
+            firstName: "Need an entry for either first or last name.",
+            lastName: "Need an entry for either first or last name.",
           });
         } else {
           router.push(
-            `/dashboard/patient?firstName=${values.firstName}&lastName=${values.lastName}`
+            `/dashboard/patient${type === "check" ? "/check" : ""}?firstName=${
+              values.firstName
+            }&lastName=${values.lastName}`
           );
         }
       }}

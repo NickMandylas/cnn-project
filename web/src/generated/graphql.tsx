@@ -32,6 +32,30 @@ export type AccountResponse = {
   account?: Maybe<Account>;
 };
 
+export type Check = {
+  __typename?: 'Check';
+  id: Scalars['ID'];
+  localisation: Scalars['String'];
+  variant: Scalars['String'];
+  confidence: Scalars['String'];
+  scanDate: Scalars['String'];
+  scan: Scalars['String'];
+  createdAt: Scalars['String'];
+  updatedAt: Scalars['String'];
+};
+
+export type CheckResponse = {
+  __typename?: 'CheckResponse';
+  errors?: Maybe<Array<FieldError>>;
+  check?: Maybe<Check>;
+};
+
+export type ChecksResponse = {
+  __typename?: 'ChecksResponse';
+  errors?: Maybe<Array<FieldError>>;
+  checks?: Maybe<Array<Check>>;
+};
+
 export type CreatePatientInput = {
   firstName: Scalars['String'];
   lastName: Scalars['String'];
@@ -90,6 +114,7 @@ export type Mutation = {
   login: AccountResponse;
   logout: Scalars['Boolean'];
   register: AccountResponse;
+  createCheck: CheckResponse;
   createHistorical: Scalars['Boolean'];
   createPatient: PatientResponse;
   deletePatient: Scalars['Boolean'];
@@ -104,6 +129,13 @@ export type MutationLoginArgs = {
 
 export type MutationRegisterArgs = {
   data: RegisterInput;
+};
+
+
+export type MutationCreateCheckArgs = {
+  file: Scalars['Upload'];
+  patientId: Scalars['String'];
+  localisation: Scalars['String'];
 };
 
 
@@ -142,6 +174,7 @@ export type Patient = {
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
   historicals: Array<Historical>;
+  checks: Array<Check>;
 };
 
 export type PatientResponse = {
@@ -159,10 +192,22 @@ export type PatientsResponse = {
 export type Query = {
   __typename?: 'Query';
   account?: Maybe<AccountResponse>;
+  check?: Maybe<CheckResponse>;
+  checks?: Maybe<ChecksResponse>;
   historical?: Maybe<HistoricalResponse>;
   historicals?: Maybe<HistoricalsResponse>;
   patient?: Maybe<PatientResponse>;
   patients?: Maybe<PatientsResponse>;
+};
+
+
+export type QueryCheckArgs = {
+  id?: Maybe<Scalars['String']>;
+};
+
+
+export type QueryChecksArgs = {
+  patientId?: Maybe<Scalars['String']>;
 };
 
 
@@ -256,6 +301,59 @@ export type AccountQuery = (
       { __typename?: 'Account' }
       & Pick<Account, 'id' | 'firstName' | 'lastName' | 'email' | 'createdAt'>
     )>, errors?: Maybe<Array<(
+      { __typename?: 'FieldError' }
+      & Pick<FieldError, 'field' | 'message'>
+    )>> }
+  )> }
+);
+
+export type CreateCheckMutationVariables = Exact<{
+  file: Scalars['Upload'];
+  localisation: Scalars['String'];
+  patientId: Scalars['String'];
+}>;
+
+
+export type CreateCheckMutation = (
+  { __typename?: 'Mutation' }
+  & { createCheck: (
+    { __typename?: 'CheckResponse' }
+    & { check?: Maybe<(
+      { __typename?: 'Check' }
+      & Pick<Check, 'id' | 'localisation' | 'variant' | 'confidence' | 'scanDate' | 'scan'>
+    )> }
+  ) }
+);
+
+export type CheckQueryVariables = Exact<{
+  id?: Maybe<Scalars['String']>;
+}>;
+
+
+export type CheckQuery = (
+  { __typename?: 'Query' }
+  & { check?: Maybe<(
+    { __typename?: 'CheckResponse' }
+    & { check?: Maybe<(
+      { __typename?: 'Check' }
+      & Pick<Check, 'id' | 'localisation' | 'variant' | 'confidence' | 'scanDate' | 'scan'>
+    )> }
+  )> }
+);
+
+export type ChecksQueryVariables = Exact<{
+  patientId?: Maybe<Scalars['String']>;
+}>;
+
+
+export type ChecksQuery = (
+  { __typename?: 'Query' }
+  & { checks?: Maybe<(
+    { __typename?: 'ChecksResponse' }
+    & { checks?: Maybe<Array<(
+      { __typename?: 'Check' }
+      & Pick<Check, 'id' | 'localisation' | 'variant' | 'confidence' | 'scanDate' | 'scan'>
+    )>>, errors?: Maybe<Array<(
       { __typename?: 'FieldError' }
       & Pick<FieldError, 'field' | 'message'>
     )>> }
@@ -577,6 +675,136 @@ export function useAccountLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Ac
 export type AccountQueryHookResult = ReturnType<typeof useAccountQuery>;
 export type AccountLazyQueryHookResult = ReturnType<typeof useAccountLazyQuery>;
 export type AccountQueryResult = Apollo.QueryResult<AccountQuery, AccountQueryVariables>;
+export const CreateCheckDocument = gql`
+    mutation CreateCheck($file: Upload!, $localisation: String!, $patientId: String!) {
+  createCheck(file: $file, localisation: $localisation, patientId: $patientId) {
+    check {
+      id
+      localisation
+      variant
+      confidence
+      scanDate
+      scan
+    }
+  }
+}
+    `;
+export type CreateCheckMutationFn = Apollo.MutationFunction<CreateCheckMutation, CreateCheckMutationVariables>;
+
+/**
+ * __useCreateCheckMutation__
+ *
+ * To run a mutation, you first call `useCreateCheckMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateCheckMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createCheckMutation, { data, loading, error }] = useCreateCheckMutation({
+ *   variables: {
+ *      file: // value for 'file'
+ *      localisation: // value for 'localisation'
+ *      patientId: // value for 'patientId'
+ *   },
+ * });
+ */
+export function useCreateCheckMutation(baseOptions?: Apollo.MutationHookOptions<CreateCheckMutation, CreateCheckMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateCheckMutation, CreateCheckMutationVariables>(CreateCheckDocument, options);
+      }
+export type CreateCheckMutationHookResult = ReturnType<typeof useCreateCheckMutation>;
+export type CreateCheckMutationResult = Apollo.MutationResult<CreateCheckMutation>;
+export type CreateCheckMutationOptions = Apollo.BaseMutationOptions<CreateCheckMutation, CreateCheckMutationVariables>;
+export const CheckDocument = gql`
+    query Check($id: String) {
+  check(id: $id) {
+    check {
+      id
+      localisation
+      variant
+      confidence
+      scanDate
+      scan
+    }
+  }
+}
+    `;
+
+/**
+ * __useCheckQuery__
+ *
+ * To run a query within a React component, call `useCheckQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCheckQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCheckQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useCheckQuery(baseOptions?: Apollo.QueryHookOptions<CheckQuery, CheckQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<CheckQuery, CheckQueryVariables>(CheckDocument, options);
+      }
+export function useCheckLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<CheckQuery, CheckQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<CheckQuery, CheckQueryVariables>(CheckDocument, options);
+        }
+export type CheckQueryHookResult = ReturnType<typeof useCheckQuery>;
+export type CheckLazyQueryHookResult = ReturnType<typeof useCheckLazyQuery>;
+export type CheckQueryResult = Apollo.QueryResult<CheckQuery, CheckQueryVariables>;
+export const ChecksDocument = gql`
+    query Checks($patientId: String) {
+  checks(patientId: $patientId) {
+    checks {
+      id
+      localisation
+      variant
+      confidence
+      scanDate
+      scan
+    }
+    errors {
+      field
+      message
+    }
+  }
+}
+    `;
+
+/**
+ * __useChecksQuery__
+ *
+ * To run a query within a React component, call `useChecksQuery` and pass it any options that fit your needs.
+ * When your component renders, `useChecksQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useChecksQuery({
+ *   variables: {
+ *      patientId: // value for 'patientId'
+ *   },
+ * });
+ */
+export function useChecksQuery(baseOptions?: Apollo.QueryHookOptions<ChecksQuery, ChecksQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ChecksQuery, ChecksQueryVariables>(ChecksDocument, options);
+      }
+export function useChecksLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ChecksQuery, ChecksQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ChecksQuery, ChecksQueryVariables>(ChecksDocument, options);
+        }
+export type ChecksQueryHookResult = ReturnType<typeof useChecksQuery>;
+export type ChecksLazyQueryHookResult = ReturnType<typeof useChecksLazyQuery>;
+export type ChecksQueryResult = Apollo.QueryResult<ChecksQuery, ChecksQueryVariables>;
 export const CreateHistoricalDocument = gql`
     mutation CreateHistorical($file: Upload!, $localisation: String!, $variant: String!, $scanDate: String!, $patientId: String!) {
   createHistorical(

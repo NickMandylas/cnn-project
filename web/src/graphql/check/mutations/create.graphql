@@ -1,0 +1,20 @@
+mutation CreateCheck(
+  $file: Upload!
+  $localisation: String!
+  $patientId: String!
+) {
+  createCheck(
+    file: $file
+    localisation: $localisation
+    patientId: $patientId
+  ) {
+    check {
+      id
+      localisation
+      variant
+      confidence
+      scanDate
+      scan
+    }
+  }
+}

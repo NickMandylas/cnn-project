@@ -7,6 +7,7 @@ import {
 } from "@mikro-orm/core";
 import { Field, ID, ObjectType } from "type-graphql";
 import { v4 } from "uuid";
+import { Check } from "./check.entity";
 import { Historical } from "./historical.entity";
 
 @ObjectType()
@@ -51,4 +52,8 @@ export class Patient {
   @Field(() => [Historical])
   @OneToMany(() => Historical, (historical) => historical.patient)
   historicals = new Collection<Historical>(this);
+
+  @Field(() => [Check])
+  @OneToMany(() => Check, (check) => check.patient)
+  checks = new Collection<Check>(this);
 }
