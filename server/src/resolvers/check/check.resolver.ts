@@ -3,6 +3,7 @@ import { Check } from "@server/entities/check.entity";
 import { getSignedUrl } from "@server/shared/getFile";
 import { CheckResponse, ChecksResponse } from "@server/shared/responses/check";
 import { Arg, Ctx, Query, Resolver } from "type-graphql";
+import { EntityManager } from "@mikro-orm/postgresql";
 
 @Resolver()
 export class CheckResolver {
@@ -40,7 +41,18 @@ export class CheckResolver {
     @Arg("patientId", { nullable: true }) id: string,
     @Ctx() { em, storage }: ServerContext,
   ): Promise<ChecksResponse> {
-    const checks = await em.find(Check, { patient: id });
+    let checks: Check[];
+
+    console.log(id);
+
+    if (id === undefined) {
+      checks = await (em as EntityManager)
+        .createQueryBuilder(Check)
+        .select("*")
+        .getResult();
+    } else {
+      checks = await em.find(Check, { patient: id });
+    }
 
     for (let i = 0; i < checks.length; i++) {
       const url = await getSignedUrl(

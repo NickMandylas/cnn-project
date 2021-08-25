@@ -5,6 +5,7 @@ import { ServerContext } from "@server/contracts/interfaces/serverContext";
 import { v4 } from "uuid";
 import { Check } from "@server/entities/check.entity";
 import { CheckResponse } from "@server/shared/responses/check";
+import { getSignedUrl } from "@server/shared/getFile";
 
 const bucketName = "cnn-skin-lesion-images";
 
@@ -63,6 +64,14 @@ export class CreateCheckResolver {
     });
 
     await em.persistAndFlush(check);
+
+    const url = await getSignedUrl(
+      storage,
+      "cnn-skin-lesion-images",
+      check.scan,
+    );
+
+    check.scan = url[0];
 
     return { check };
   }

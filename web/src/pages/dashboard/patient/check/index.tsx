@@ -82,7 +82,9 @@ const PatientsResultsTable: React.FC<PatientsResultsTableProps> = ({
                     size="small"
                     palette="secondary"
                     onClick={() =>
-                      router.push(`/dashboard/patient/check/${patient.id}`)
+                      router.push(
+                        `/dashboard/patient/check/create/${patient.id}`
+                      )
                     }
                   >
                     Check Patient

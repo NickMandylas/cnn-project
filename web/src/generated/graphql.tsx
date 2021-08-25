@@ -342,7 +342,7 @@ export type CheckQuery = (
 );
 
 export type ChecksQueryVariables = Exact<{
-  patientId: Scalars['String'];
+  patientId?: Maybe<Scalars['String']>;
 }>;
 
 
@@ -760,7 +760,7 @@ export type CheckQueryHookResult = ReturnType<typeof useCheckQuery>;
 export type CheckLazyQueryHookResult = ReturnType<typeof useCheckLazyQuery>;
 export type CheckQueryResult = Apollo.QueryResult<CheckQuery, CheckQueryVariables>;
 export const ChecksDocument = gql`
-    query Checks($patientId: String!) {
+    query Checks($patientId: String) {
   checks(patientId: $patientId) {
     checks {
       id
@@ -794,7 +794,7 @@ export const ChecksDocument = gql`
  *   },
  * });
  */
-export function useChecksQuery(baseOptions: Apollo.QueryHookOptions<ChecksQuery, ChecksQueryVariables>) {
+export function useChecksQuery(baseOptions?: Apollo.QueryHookOptions<ChecksQuery, ChecksQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<ChecksQuery, ChecksQueryVariables>(ChecksDocument, options);
       }
