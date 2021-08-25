@@ -1,0 +1,12 @@
+query Check($id: String) {
+  check(id: $id) {
+    check {
+      id
+      localisation
+      variant
+      confidence
+      scanDate
+      scan
+    }
+  }
+}

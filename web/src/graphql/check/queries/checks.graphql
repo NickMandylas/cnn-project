@@ -1,0 +1,16 @@
+query Checks($patientId: String!) {
+  checks(patientId: $patientId) {
+    checks {
+      id
+      localisation
+      variant
+      confidence
+      scanDate
+      scan
+    }
+    errors {
+      field
+      message
+    }
+  }
+}
