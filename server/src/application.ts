@@ -60,7 +60,7 @@ export default class Application {
 
     this.host.register(fastifyCors, {
       origin: __prod__
-        ? ["https://cnn-project.vercel.app", "http://localhost:3000"]
+        ? ["https://cnn.nick.uno"]
         : ["http://192.168.114.127:3000", "http://localhost:3000"],
       credentials: true,
     });
