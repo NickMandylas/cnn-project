@@ -1,6 +1,6 @@
-import { Patient } from "@server/entities/patient.entity";
+import { Patient } from "../../entities/patient.entity";
 import { ObjectType, Field } from "type-graphql";
-import { FieldError } from "./FieldError";
+import { FieldError } from "./fieldError";
 
 @ObjectType()
 export class PatientResponse {

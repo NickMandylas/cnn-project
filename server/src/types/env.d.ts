@@ -8,5 +8,7 @@ declare namespace NodeJS {
     DB_PASSWORD: string;
     DB_NAME: string;
     DB_HOST: string;
+    CORS_ORIGIN: string;
+    COOKIE_DOMAIN: string;
   }
 }

@@ -1,6 +1,6 @@
-import { Historical } from "@server/entities/historical.entity";
+import { Historical } from "../../entities/historical.entity";
 import { ObjectType, Field } from "type-graphql";
-import { FieldError } from "./FieldError";
+import { FieldError } from "./fieldError";
 
 @ObjectType()
 export class HistoricalResponse {

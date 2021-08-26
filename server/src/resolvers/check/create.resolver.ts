@@ -1,11 +1,11 @@
 import { Arg, Ctx, Mutation, Resolver } from "type-graphql";
 import { GraphQLUpload, FileUpload } from "graphql-upload";
 import axios from "axios";
-import { ServerContext } from "@server/contracts/interfaces/serverContext";
+import { ServerContext } from "../../contracts/interfaces/serverContext";
 import { v4 } from "uuid";
-import { Check } from "@server/entities/check.entity";
-import { CheckResponse } from "@server/shared/responses/check";
-import { getSignedUrl } from "@server/shared/getFile";
+import { Check } from "../../entities/check.entity";
+import { CheckResponse } from "../../shared/responses/check";
+import { getSignedUrl } from "../../shared/getFile";
 
 const bucketName = "cnn-skin-lesion-images";
 

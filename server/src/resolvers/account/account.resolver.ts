@@ -1,6 +1,6 @@
-import { ServerContext } from "@server/contracts/interfaces/serverContext";
-import { Account } from "@server/entities/account.entity";
-import { AccountResponse } from "@server/shared/responses/account";
+import { ServerContext } from "../../contracts/interfaces/serverContext";
+import { Account } from "../../entities/account.entity";
+import { AccountResponse } from "../../shared/responses/account";
 import { Ctx, Query, Resolver } from "type-graphql";
 
 @Resolver()
