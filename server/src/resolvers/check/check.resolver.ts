@@ -1,8 +1,8 @@
-import { ServerContext } from "@server/contracts/interfaces/serverContext";
-import { Check } from "@server/entities/check.entity";
-import { getSignedUrl } from "@server/shared/getFile";
-import { CheckResponse, ChecksResponse } from "@server/shared/responses/check";
 import { Arg, Ctx, Query, Resolver } from "type-graphql";
+import { ServerContext } from "../../contracts/interfaces/serverContext";
+import { Check } from "../../entities/check.entity";
+import { getSignedUrl } from "../../shared/getFile";
+import { CheckResponse, ChecksResponse } from "../../shared/responses/check";
 import { EntityManager } from "@mikro-orm/postgresql";
 
 @Resolver()

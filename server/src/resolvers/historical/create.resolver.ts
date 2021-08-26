@@ -1,7 +1,7 @@
 import { Arg, Ctx, Mutation, Resolver } from "type-graphql";
 import { GraphQLUpload, FileUpload } from "graphql-upload";
-import { ServerContext } from "@server/contracts/interfaces/serverContext";
-import { Historical } from "@server/entities/historical.entity";
+import { ServerContext } from "../../contracts/interfaces/serverContext";
+import { Historical } from "../../entities/historical.entity";
 import { v4 } from "uuid";
 
 const bucketName = "cnn-skin-lesion-images";

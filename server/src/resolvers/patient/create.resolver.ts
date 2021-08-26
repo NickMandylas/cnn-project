@@ -1,8 +1,8 @@
 import { Arg, Ctx, Mutation, Resolver } from "type-graphql";
-import { ServerContext } from "@server/contracts/interfaces/serverContext";
-import { PatientResponse } from "@server/shared/responses/patient";
-import { CreatePatientInput } from "@server/contracts/validation/patient.validator";
-import { Patient } from "@server/entities/patient.entity";
+import { ServerContext } from "../../contracts/interfaces/serverContext";
+import { PatientResponse } from "../../shared/responses/patient";
+import { CreatePatientInput } from "../../contracts/validation/patient.validator";
+import { Patient } from "../../entities/patient.entity";
 
 @Resolver()
 export class CreatePatientResolver {

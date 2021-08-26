@@ -1,9 +1,9 @@
 import { Arg, Ctx, Mutation, Resolver } from "type-graphql";
-import argon2 from "argon2";
-import { ServerContext } from "@server/contracts/interfaces/serverContext";
-import { RegisterInput } from "@server/contracts/validation/account.validator";
-import { Account } from "@server/entities/account.entity";
-import { AccountResponse } from "@server/shared/responses/account";
+import bcrypt from "bcryptjs";
+import { ServerContext } from "../../contracts/interfaces/serverContext";
+import { RegisterInput } from "../../contracts/validation/account.validator";
+import { Account } from "../../entities/account.entity";
+import { AccountResponse } from "../../shared/responses/account";
 
 @Resolver()
 export class RegisterResolver {
@@ -25,7 +25,7 @@ export class RegisterResolver {
       };
     }
 
-    const hashedPassword = await argon2.hash(password);
+    const hashedPassword = await bcrypt.hash(password, 10);
 
     const account = em.create(Account, {
       firstName,

@@ -1,14 +1,14 @@
-import { ServerContext } from "@server/contracts/interfaces/serverContext";
-import { Patient } from "@server/entities/patient.entity";
+import { ServerContext } from "../../contracts/interfaces/serverContext";
+import { Patient } from "../../entities/patient.entity";
 import {
   PatientResponse,
   PatientsResponse,
-} from "@server/shared/responses/patient";
+} from "../../shared/responses/patient";
 import { Arg, Ctx, Query, Resolver } from "type-graphql";
 import isUUID from "validator/lib/isUUID";
-// import pathHandler from "@server/shared/pathHandler";
+// import pathHandler from "../../shared/pathHandler";
 // import { GraphQLResolveInfo } from "graphql";
-// import { getSignedUrl } from "@server/shared/getFile";
+// import { getSignedUrl } from "../../shared/getFile";
 
 @Resolver()
 export class PatientResolver {

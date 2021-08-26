@@ -1,6 +1,6 @@
-import { Check } from "@server/entities/check.entity";
+import { Check } from "../../entities/check.entity";
 import { ObjectType, Field } from "type-graphql";
-import { FieldError } from "./FieldError";
+import { FieldError } from "./fieldError";
 
 @ObjectType()
 export class CheckResponse {

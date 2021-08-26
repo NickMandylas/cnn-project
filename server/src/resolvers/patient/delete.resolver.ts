@@ -1,6 +1,6 @@
 import { Arg, Ctx, Mutation, Resolver } from "type-graphql";
-import { ServerContext } from "@server/contracts/interfaces/serverContext";
-import { Patient } from "@server/entities/patient.entity";
+import { ServerContext } from "../../contracts/interfaces/serverContext";
+import { Patient } from "../../entities/patient.entity";
 import isUUID from "validator/lib/isUUID";
 
 @Resolver()

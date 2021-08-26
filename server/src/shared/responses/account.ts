@@ -1,6 +1,6 @@
-import { Account } from "@server/entities/account.entity";
+import { Account } from "../../entities/account.entity";
 import { ObjectType, Field } from "type-graphql";
-import { FieldError } from "./FieldError";
+import { FieldError } from "./fieldError";
 
 @ObjectType()
 export class AccountResponse {

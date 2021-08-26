@@ -1,9 +1,9 @@
 import { Arg, Ctx, Mutation, Resolver } from "type-graphql";
-import argon2 from "argon2";
-import { ServerContext } from "@server/contracts/interfaces/serverContext";
-import { LoginInput } from "@server/contracts/validation/account.validator";
-import { Account } from "@server/entities/account.entity";
-import { AccountResponse } from "@server/shared/responses/account";
+import bcrypt from "bcryptjs";
+import { ServerContext } from "../../contracts/interfaces/serverContext";
+import { LoginInput } from "../../contracts/validation/account.validator";
+import { Account } from "../../entities/account.entity";
+import { AccountResponse } from "../../shared/responses/account";
 
 @Resolver()
 export class LoginResolver {
@@ -25,7 +25,8 @@ export class LoginResolver {
       };
     }
 
-    const valid = await argon2.verify(account.password, password);
+    const valid = await bcrypt.compare(password, account.password);
+    console.log(valid);
 
     if (!valid) {
       return {

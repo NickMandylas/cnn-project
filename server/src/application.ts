@@ -55,12 +55,12 @@ export default class Application {
       logger: {
         prettyPrint: true,
       },
-      trustProxy: __prod__ ? 1 : 0,
+      trustProxy: __prod__ ? true : 0,
     });
 
     this.host.register(fastifyCors, {
       origin: __prod__
-        ? "" // TODO - Fix for production.
+        ? ["https://cnn-project.vercel.app", "http://localhost:3000"]
         : ["http://192.168.114.127:3000", "http://localhost:3000"],
       credentials: true,
     });
@@ -78,7 +78,7 @@ export default class Application {
       saveUninitialized: false,
       cookie: {
         httpOnly: true,
-        domain: __prod__ ? ".amazon.com" : "",
+        domain: __prod__ ? ".nick.uno" : "",
         secure: __prod__,
         maxAge: 1000 * 60 * 60 * 24 * 7 * 365,
       },

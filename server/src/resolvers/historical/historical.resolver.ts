@@ -1,11 +1,11 @@
-import { ServerContext } from "@server/contracts/interfaces/serverContext";
-import { Historical } from "@server/entities/historical.entity";
-import { getSignedUrl } from "@server/shared/getFile";
+import { Arg, Ctx, Query, Resolver } from "type-graphql";
+import { ServerContext } from "../../contracts/interfaces/serverContext";
+import { Historical } from "../../entities/historical.entity";
+import { getSignedUrl } from "../../shared/getFile";
 import {
   HistoricalResponse,
   HistoricalsResponse,
-} from "@server/shared/responses/historical";
-import { Arg, Ctx, Query, Resolver } from "type-graphql";
+} from "../../shared/responses/historical";
 
 @Resolver()
 export class HistoricalResolver {
