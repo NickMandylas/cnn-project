@@ -118,9 +118,16 @@ const PatientInformation: React.FC<PatientInformationProps> = ({ patient }) => {
   );
 };
 
+const SUPPORTED_FORMATS = ["image/jpg", "image/jpeg", "image/gif", "image/png"];
+
 const HistoricalUploadSchema = yup.object().shape({
   localisation: yup.mixed().required("Localisation is required!"),
-  file: yup.mixed().required("An image is required"),
+  file: yup
+    .mixed()
+    .test("fileType", "Unsupported File Format", (value) =>
+      SUPPORTED_FORMATS.includes(value.type)
+    )
+    .required("An image is required"),
 });
 interface HistoricalUploadFormProps {
   id: string;
