@@ -15,6 +15,27 @@ import {
   Table,
 } from "bumbag";
 
+const changeVariant = (variant: string): string => {
+  switch (variant) {
+    case "nv":
+      return "Melanocytic nevi (NV)";
+    case "mel":
+      return "Melanoma (MEL)";
+    case "bkl":
+      return "Benign keratosis-like lesions (BKL)";
+    case "bcc":
+      return "Basal cell carcinoma (BCC)";
+    case "akiec":
+      return "Actinic keratoses (AKIEC)";
+    case "df":
+      return "Dermatofibroma (DF)";
+    case "vasc":
+      return "Vascular lesions (VASC)";
+    default:
+      return "Unknown";
+  }
+};
+
 const Patient = () => {
   const router = useRouter();
   const auth = useAuth();
@@ -66,7 +87,7 @@ const Patient = () => {
                 <Table.Cell>
                   {new Date(Number(check.scanDate as string)).toDateString()}
                 </Table.Cell>
-                <Table.Cell>{check.variant}</Table.Cell>
+                <Table.Cell>{changeVariant(check.variant)}</Table.Cell>
                 <Table.Cell>{check.localisation}</Table.Cell>
                 <Table.Cell>{check.confidence}</Table.Cell>
               </Table.Row>
